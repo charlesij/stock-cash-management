@@ -8,7 +8,7 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
-        <div class="bg-white rounded-xl shadow-sm border-l-4 border-green-500 overflow-hidden transform transition-transform duration-300 hover:-translate-y-1 block">
+        <div title="Go to cash details" class="bg-white rounded-xl shadow-sm border-l-4 border-green-500 overflow-hidden transform transition-transform duration-300 hover:-translate-y-1">
             <a href="#" class="cursor-pointer ">
                 <div class="p-5">
                     <div class="flex items-center justify-between">
@@ -32,27 +32,28 @@
             </a>
         </div>
 
-        <!-- Outstanding Debt Card -->
-        <div class="bg-white rounded-xl shadow-sm border-l-4 border-red-500 overflow-hidden">
-            <div class="p-5">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Outstanding Debt</p>
-                        <p class="text-2xl font-bold text-red-600 mt-1">Rp {{ number_format($outstandingDebt, 0, ',', '.') }}</p>
-                        <p class="text-xs text-gray-500 mt-1">Due within 30 days: Rp {{ number_format($debtDueSoon, 0, ',', '.') }}</p>
+        <div title="Go to debt details" class="bg-white rounded-xl shadow-sm border-l-4 border-red-500 overflow-hidden transform transition-transform duration-300 hover:-translate-y-1">
+            <a href="#">
+                <div class="p-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Outstanding Debt</p>
+                            <p class="text-2xl font-bold text-red-600 mt-1">Rp {{ number_format($outstandingDebt, 0, ',', '.') }}</p>
+                            <p class="text-xs text-gray-500 mt-1">Due within 30 days: Rp {{ number_format($debtDueSoon, 0, ',', '.') }}</p>
+                        </div>
+                        <div class="bg-red-50 rounded-full p-3">
+                            <i class="fas fa-file-invoice-dollar text-xl text-red-500"></i>
+                        </div>
                     </div>
-                    <div class="bg-red-50 rounded-full p-3">
-                        <i class="fas fa-file-invoice-dollar text-xl text-red-500"></i>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="{{ $debtTrend <= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
+                            <i class="fas fa-{{ $debtTrend <= 0 ? 'arrow-down' : 'arrow-up' }} mr-1"></i>
+                            {{ abs($debtTrend) }}%
+                        </span>
+                        <span class="text-gray-500 ml-2">vs last month</span>
                     </div>
                 </div>
-                <div class="mt-4 flex items-center text-sm">
-                    <span class="{{ $debtTrend <= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
-                        <i class="fas fa-{{ $debtTrend <= 0 ? 'arrow-down' : 'arrow-up' }} mr-1"></i>
-                        {{ abs($debtTrend) }}%
-                    </span>
-                    <span class="text-gray-500 ml-2">vs last month</span>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
 

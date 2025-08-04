@@ -6,7 +6,7 @@
                     <i class="fas fa-bars text-xl"></i>
                 </button>
                 <div class="ml-4">
-                    <x-breadcrumb-component />
+                    <x-breadcrumb-component :links="$breadcrumb" />
                 </div>
             </div>
         </div>

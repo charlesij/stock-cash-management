@@ -16,7 +16,7 @@ Route::get('login', [AuthController::class, 'loginView'])->name('login');
 Route::post('login', [AuthController::class, 'authLogin'])->name('login');
 
 
-Route::get('dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard.index');
 Route::get('stocks', [StockController::class, 'stockView'])->name('stocks');
 Route::get('transactions', [TransactionController::class, 'transactionView'])->name('transactions');
 Route::get('reports', [ReportController::class, 'reportView'])->name('reports');

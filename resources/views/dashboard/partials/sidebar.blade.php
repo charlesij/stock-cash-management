@@ -8,7 +8,7 @@
 
     <nav class="mt-6">
         <div class="px-4">
-            <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('dashboard') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
+            <a href="{{ route('dashboard.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('dashboard.index') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
                 <i class="fas fa-home"></i>
                 <span class="mx-4">Dashboard</span>
             </a>

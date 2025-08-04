@@ -11,6 +11,10 @@ class DashboardController extends Controller
     {
         // Get current date for last update
         $currentDate = Carbon::now();
+
+        $breadcrumb = [
+            ['name' => 'Dashboard', 'url' => route('dashboard.index')],
+        ];
         
         // Example data - replace these with actual database queries later
         $data = [
@@ -34,18 +38,10 @@ class DashboardController extends Controller
             'todayTransactions' => 24, // Transactions today
             'pendingTransactions' => 5, // Pending transactions
             
-            // Breadcrumb data
-            'breadcrumbs' => [
-                [
-                    'title' => 'Dashboard',
-                    'url' => route('dashboard'),
-                    'active' => true
-                ]
-            ]
+            'breadcrumb' => $breadcrumb,
         ];
 
-        return view('dashboard.overview', $data);
-        // return view('dashboard.layout.main');
+        return view('dashboard.index', $data);
     }
 
     /**

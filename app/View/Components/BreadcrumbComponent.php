@@ -8,12 +8,10 @@ use Illuminate\View\Component;
 
 class BreadcrumbComponent extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
+    public array $links;
+    public function __construct(array $links = [])
     {
-        //
+        $this->links = $links;
     }
     public function render(): View|Closure|string
     {
