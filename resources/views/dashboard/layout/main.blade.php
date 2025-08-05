@@ -29,5 +29,6 @@
     </div>
 
     @vite('resources/js/app.js')
+    <script src="{{ asset('script.js') }}"></script>
 </body>
 </html>

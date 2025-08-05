@@ -9,7 +9,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
         <div title="Go to cash details" class="bg-white rounded-xl shadow-sm border-l-4 border-green-500 overflow-hidden transform transition-transform duration-300 hover:-translate-y-1">
-            <a href="#" class="cursor-pointer ">
+            <a href="{{ route('transaction.cashflow') }}" class="cursor-pointer ">
                 <div class="p-5">
                     <div class="flex items-center justify-between">
                         <div>
@@ -89,7 +89,7 @@
         </a>
 
         <!-- Transactions Button Card -->
-        <a href="{{ route('transactions') }}" class="group">
+        <a href="{{ route('transaction.index') }}" class="group">
             <div class="bg-white rounded-xl shadow-sm p-5 transition-all duration-200 hover:shadow-md">
                 <div class="flex items-center justify-between mb-4">
                     <div>
