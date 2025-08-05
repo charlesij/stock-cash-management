@@ -12,6 +12,8 @@ use App\Http\Controllers\CashierController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TipeAkunController;
 use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
@@ -38,6 +40,11 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::get('_settings', [SettingController::class, 'settingView'])->name('settings');
     Route::get('_profile', [ProfileController::class, 'profileView'])->name('profile');
     
+    // master
+    Route::get('supplier', [SupplierController::class, 'index'])->name('supplier.index');
+    Route::get('supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+    Route::post('supplier/create', [SupplierController::class, 'store'])->name('supplier.store');
+
     Route::post('_logout', [AuthController::class, 'authLogout'])->name('logout');
 });
 

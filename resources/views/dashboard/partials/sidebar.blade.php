@@ -46,6 +46,16 @@
                 <span class="mx-4">Reports</span>
             </a>
 
+            <a href="#" class="flex items-center px-4 py-3 {{ request()->routeIs('settings*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
+                <i class="fa-solid fa-user-tie"></i>
+                <span class="mx-4">Customer</span>
+            </a>
+
+            <a href="/supplier" class="flex items-center px-4 py-3 {{ request()->routeIs('supplier*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
+                <i class="fa-solid fa-user-tie"></i>
+                <span class="mx-4">Supplier</span>
+            </a>
+
             <div class="border-t border-gray-700 mt-6 pt-4">
                 <a href="{{ route('profile') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('profile*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
                     <i class="fa-solid fa-user-tie"></i>
