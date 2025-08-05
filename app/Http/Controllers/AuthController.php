@@ -25,9 +25,19 @@ class AuthController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
+            if (auth()->user()->access_id == 3) {
+                return redirect()->route('cashier.index');
+            } else {
+                return redirect()->route('dashboard.index');
+            }
         }
 
         return redirect()->back()->withErrors(['username' => 'Invalid credentials']);
+    }
+
+    public function authLogout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
     }
 }
