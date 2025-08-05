@@ -9,7 +9,7 @@ class ProfileController extends Controller
     public function profileView()
     {
         $breadcrumb = [
-            ['name' => 'Profile', 'url' => route('profile')],
+            ['name' => 'Profile', 'url' => route('profile.index')],
         ];
         return view('dashboard.profile.index', [
             'breadcrumb' => $breadcrumb
