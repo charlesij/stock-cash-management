@@ -8,13 +8,13 @@
 
     <nav class="mt-6">
         <div class="px-4">
-            {{-- <a href="{{ route('dashboard.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('dashboard.index') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
-                <i class="fas fa-home"></i>
-                <span class="mx-4">Dashboard</span>
-            </a> --}}
 
             <x-sidebar-item.single route="dashboard.index" title="Dashboard" icon="fas fa-home"/>
-            <x-sidebar-item.single route="stocks" title="Stock Management" icon="fas fa-box"/>
+            <x-sidebar-item.single route="stocks.index" title="Stock Management" icon="fas fa-box"/>
+            <x-sidebar-item.single route="transaction.index" title="Transactions" icon="fas fa-exchange-alt"/>
+            <x-sidebar-item.single route="reports.index" title="Reports" icon="fas fa-chart-bar"/>
+            <x-sidebar-item.single route="customer.index" title="Customer" icon="fas fa-chart-bar"/>
+            <x-sidebar-item.single route="supplier.index" title="Supplier" icon="fas fa-chart-bar"/>
 
             {{-- <div class="mt-2">
                 <button class="flex items-center px-4 py-3 w-full hover:bg-gray-700 rounded-lg" onclick="toggleSubmenu('exampleSubmenu')">
@@ -34,38 +34,11 @@
                 </div>
             </div> --}}
 
-            <x-sidebar-item.single route="transaction.index" title="Transactions" icon="fas fa-exchange-alt"/>
-
-            {{-- <a href="{{ route('transaction.index') }}" class="flex items-center px-4 py-3 mt-2 {{ request()->routeIs('transaction.index*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
-                <i class="fas fa-exchange-alt"></i>
-                <span class="mx-4">Transactions</span>
-            </a> --}}
-
-            <a href="{{ route('reports') }}" class="flex items-center px-4 py-3 mt-2 {{ request()->routeIs('reports*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
-                <i class="fas fa-chart-bar"></i>
-                <span class="mx-4">Reports</span>
-            </a>
-
-            <a href="#" class="flex items-center px-4 py-3 {{ request()->routeIs('settings*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
-                <i class="fa-solid fa-user-tie"></i>
-                <span class="mx-4">Customer</span>
-            </a>
-
-            <a href="/supplier" class="flex items-center px-4 py-3 {{ request()->routeIs('supplier*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
-                <i class="fa-solid fa-user-tie"></i>
-                <span class="mx-4">Supplier</span>
-            </a>
 
             <div class="border-t border-gray-700 mt-6 pt-4">
-                <a href="{{ route('profile') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('profile*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
-                    <i class="fa-solid fa-user-tie"></i>
-                    <span class="mx-4">Profile</span>
-                </a>
-
-                <a href="{{ route('settings') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('settings*') ? 'bg-gray-700 rounded-lg' : 'hover:bg-gray-700 rounded-lg' }}">
-                    <i class="fas fa-cog"></i>
-                    <span class="mx-4">Settings</span>
-                </a>
+                
+            <x-sidebar-item.single route="profile.index" title="Profile" icon="fas fa-user-tie"/>    
+            <x-sidebar-item.single route="settings.index" title="Settings" icon="fas fa-cog"/>
 
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
