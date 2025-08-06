@@ -8,13 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('kontak', function (Blueprint $table) {
+        Schema::create('supplier', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->nullable();
             $table->string('alamat')->nullable();
             $table->string('no_telp')->nullable();
             $table->decimal('hutang', 15,0)->nullable();
-            $table->enum('jenis', ['customer', 'supplier']);
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kontak');
+        Schema::dropIfExists('supplier');
     }
 };
