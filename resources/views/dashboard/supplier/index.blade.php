@@ -53,7 +53,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="4" class="px-6 py-4 text-gray-500 text-center">No data found</td>
+                            <td colspan="5" class="px-6 py-4 text-gray-500 text-center">No data found</td>
                         </tr>
                     @endif
                 </tbody>
