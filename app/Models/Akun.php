@@ -9,11 +9,7 @@ class Akun extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tipe_akun_id', 'kode', 'nama'];
+    protected $fillable = ['kode', 'nama', 'jenis'];
     protected $table = 'akun';
     
-    public function tipeakun()
-    {
-        return $this->belongsTo(TipeAkun::class, 'tipe_akun_id', 'id');
-    }
 }

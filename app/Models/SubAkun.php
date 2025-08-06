@@ -5,18 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AkunDetail extends Model
+class SubAkun extends Model
 {
     use HasFactory;
-    
-    protected $fillable = [
-        'akun_id',
-        'kode_transaksi',
-        'tanggal',
-        'saldo',
-    ];
 
-    protected $table = 'akun_detail';
+    protected $fillable = ['akun_id', 'kode', 'nama'];
+    protected $table = 'sub_akun';
     
     public function akun()
     {

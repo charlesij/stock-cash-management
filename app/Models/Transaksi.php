@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pembelian extends Model
+class Transaksi extends Model
 {   
     use HasFactory;
 
-    protected $fillable = ['supplier_id', 'kode', 'tanggal', 'jenis_pembayaran', 'status'];
-    protected $table = 'pembelian';
+    protected $fillable = ['kontak_id', 'kode', 'tanggal', 'tipe', 'jenis_bayar', 'status'];
+    protected $table = 'transaksi';
     
     public function supplier()
     {

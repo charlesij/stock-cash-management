@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembelian', function (Blueprint $table) {
+        Schema::create('sub_akun', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('supplier_id')->unsigned();
-            $table->string('kode');
-            $table->date('tanggal');
-            $table->string('jenis_pembayaran'); //cash / hutang
-            $table->string('status'); //lunas, belum lunas
+            $table->bigInteger('akun_id')->unsigned();
+            $table->string('kode'); // exp : 001
+            $table->string('nama'); // exp : Kas Bank
             $table->timestamps();
-
-            $table->foreign('supplier_id')->references('id')->on('supplier')
+            $table->foreign('akun_id')->references('id')->on('akun')
              ->onDelete('restrict') 
              ->onUpdate('cascade');
+            
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembelian');
+        Schema::dropIfExists('sub_akun');
     }
 };

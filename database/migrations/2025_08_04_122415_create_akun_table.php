@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer', function (Blueprint $table) {
+        Schema::create('akun', function (Blueprint $table) {
             $table->id();
-            $table->string('nama')->nullable();
-            $table->string('alamat')->nullable();
-            $table->string('no_telp')->nullable();
+            $table->string('kode'); // kas(1), hpp(2), hutang(3), pendapatan(4), biaya(5)
+            $table->string('nama'); // kas(debit), hpp(debit), hutang(kredit), pendapatan(kredit), biaya(debit)
+            $table->integer('jenis')->default(1); // 1= debit, 2=kredit
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer');
+        Schema::dropIfExists('akun ');
     }
 };

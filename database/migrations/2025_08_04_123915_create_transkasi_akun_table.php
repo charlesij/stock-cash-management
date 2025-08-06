@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('akun_detail', function (Blueprint $table) {
+        Schema::create('trans_akun', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('akun_id')->unsigned();
-            $table->string('kode_transaksi');
+            $table->bigInteger('sub_akun_id')->unsigned();
+            $table->string('transaksi_code')->nullable();
+            $table->text('keterangan')->nullable();
             $table->date('tanggal');
-            $table->decimal('saldo', 15)->default(0);
+            $table->decimal('debit', 15)->default(0);
+            $table->decimal('kredit', 15)->default(0);
+            $table->decimal('total', 15)->default(0);
             $table->timestamps();
 
-            $table->foreign('akun_id')->references('id')->on('akun')
+            $table->foreign('sub_akun_id')->references('id')->on('sub_akun')
             ->onDelete('restrict') 
             ->onUpdate('cascade');
         });
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('akun_detail');
+        Schema::dropIfExists('trans_akun');
     }
 };

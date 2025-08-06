@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipe_akun', function (Blueprint $table) {
+        Schema::create('kontak', function (Blueprint $table) {
             $table->id();
-            $table->string('kode');
-            $table->string('nama'); // kas, hpp, hutang, pendapatan, biaya
-            $table->integer('jenis')->default(1); // 1= debit, 2=kredit
+            $table->string('nama')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('no_telp')->nullable();
+            $table->enum('jenis', ['customer', 'supplier']);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipe_akun');
+        Schema::dropIfExists('kontak');
     }
 };
