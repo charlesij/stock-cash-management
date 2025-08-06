@@ -16,25 +16,6 @@
             <x-sidebar-item.single route="customer.index" title="Customer" icon="fas fa-user-tag"/>
             <x-sidebar-item.single route="supplier.index" title="Supplier" icon="fas fa-regular fa-briefcase"/>
 
-            {{-- <div class="mt-2">
-                <button class="flex items-center px-4 py-3 w-full hover:bg-gray-700 rounded-lg" onclick="toggleSubmenu('exampleSubmenu')">
-                    <i class="fas fa-folder"></i>
-                    <span class="mx-4">Example Menu</span>
-                    <i class="fas fa-chevron-down ml-auto"></i>
-                </button>
-                <div id="exampleSubmenu" class="hidden pl-4">
-                    <a href="#" class="flex items-center px-4 py-3 mt-1 hover:bg-gray-700 rounded-lg">
-                        <i class="fas fa-circle text-xs"></i>
-                        <span class="mx-4">Example Item 1</span>
-                    </a>
-                    <a href="#" class="flex items-center px-4 py-3 mt-1 hover:bg-gray-700 rounded-lg">
-                        <i class="fas fa-circle text-xs"></i>
-                        <span class="mx-4">Example Item 2</span>
-                    </a>
-                </div>
-            </div> --}}
-
-
             <div class="border-t border-gray-700 mt-6 pt-4">
                 
             <x-sidebar-item.single route="profile.index" title="Profile" icon="fas fa-user-tie"/>    

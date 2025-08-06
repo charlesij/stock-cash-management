@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AkunController;
 use App\Http\Middleware\WebGuest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CashierAccess;
@@ -9,11 +10,10 @@ use App\Http\Middleware\WebAuthenticate;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CashierController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\TipeAkunController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 
@@ -58,6 +58,13 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::put('supplier/edit', [SupplierController::class, 'update'])->name('supplier.update');
     Route::post('supplier/delete', [SupplierController::class, 'delete'])->name('supplier.delete');
     Route::post('supplier/create', [SupplierController::class, 'store'])->name('supplier.store');
+
+    Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
+    Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');
+    Route::post('customer/create', [CustomerController::class, 'store'])->name('customer.store');
+
+    Route::get('akun', [AkunController::class, 'index'])->name('akun.index');
+    Route::get('transaksiakun/{sub_akun_id}', [AkunController::class, 'transaksiakun'])->name('akun.transaksiakun');
 
     Route::post('_logout', [AuthController::class, 'authLogout'])->name('logout');
 });

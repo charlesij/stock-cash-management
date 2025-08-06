@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserAccess extends Model
 {
+    protected $table = 'user_accesses';
     protected $fillable = [
         'access_name',
         'access_menu',
@@ -13,5 +14,4 @@ class UserAccess extends Model
         'access_status',
     ];
 
-    protected $table = 'user_accesses';
 }

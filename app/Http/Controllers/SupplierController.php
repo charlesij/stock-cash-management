@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Supplier;
+use App\Models\Kontak;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -13,7 +13,7 @@ class SupplierController extends Controller
             ['name' => 'Supplier', 'url' => route('supplier.index')],
         ];
 
-        $data = Supplier::orderBy('created_at', 'desc')->paginate(10);
+        $data = Kontak::where('jenis', 'supplier')->orderBy('created_at', 'desc')->paginate(10);
 
         return view('dashboard.supplier.index', [
             'breadcrumb' => $breadcrumb,
@@ -41,8 +41,11 @@ class SupplierController extends Controller
                 'alamat' => 'required|string|max:255',
                 'no_telp' => 'required|string|max:255',
             ]);
-    
-            Supplier::create($request->all());
+            
+            $allReq = $request->all();
+            $allReq['jenis'] = 'supplier';
+            
+            Kontak::create($allReq);
     
             return redirect()->route('supplier.index')->with('success', 'Supplier created successfully');
         } catch (\Exception $e) {
@@ -57,7 +60,7 @@ class SupplierController extends Controller
             ['name' => 'Edit', 'url' => route('supplier.edit')],
         ];
         $ids = $request->ids;
-        $data = Supplier::whereIn('id', $ids)->get();
+        $data = Kontak::whereIn('id', $ids)->get();
 
         return view('dashboard.supplier.edit', [
             'breadcrumb' => $breadcrumb,
@@ -75,7 +78,7 @@ class SupplierController extends Controller
                 'no_telp.*' => 'required|string|max:255',
             ]);
 
-            $data = Supplier::whereIn('id', $ids)->get();
+            $data = Kontak::whereIn('id', $ids)->get();
             foreach ($data as $index => $item) {
                 $item->update([
                     'nama' => $request->nama[$index],
