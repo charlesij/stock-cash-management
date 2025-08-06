@@ -48,10 +48,51 @@
                 </div>
             </div>
 
-            <div class="mt-6">
-                <div class="bg-white shadow rounded-xl p-6">
-                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Transaksi Cash</h2>
-                    <p class="text-gray-600 mb-4">Daftar semua transaksi cashflow yang telah dilakukan</p>
+        </div>
+        <div class="mt-6">
+            <div class="bg-white shadow rounded-xl overflow-hidden mb-6">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-gray-700 text-gray-100 uppercase text-xs">
+                            <tr>
+                                <th class="px-6 py-3 text-left">Tanggal</th>
+                                <th class="px-6 py-3 text-left">Jenis Transaksi</th>
+                                <th class="px-6 py-3 text-left">Keterangan</th>
+                                <th class="px-6 py-3 text-left">Jumlah</th>
+                                <th class="px-6 py-3 text-left">Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">Pengeluaran</td>
+                                <td class="px-6 py-4 text-gray-500">Pembayaran Hutang</td>
+                                <td class="px-6 py-4 text-gray-500">10.000.000</td>  
+                                <td class="px-6 py-4 text-gray-500">10.100.000</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 text-gray-500">5 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">Pendapatan</td>
+                                <td class="px-6 py-4 text-gray-500">Penjualan Produk</td>
+                                <td class="px-6 py-4 text-gray-500">200.000</td>  
+                                <td class="px-6 py-4 text-gray-500">20.100.000</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 text-gray-500">1 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">Pengeluaran</td>
+                                <td class="px-6 py-4 text-gray-500">Pembelian Produk</td>
+                                <td class="px-6 py-4 text-gray-500">100.000</td>  
+                                <td class="px-6 py-4 text-gray-500">19.900.000</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 text-gray-500">1 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">Modal Masuk</td>
+                                <td class="px-6 py-4 text-gray-500">-</td>
+                                <td class="px-6 py-4 text-gray-500">20.000.000</td>  
+                                <td class="px-6 py-4 text-gray-500">20.000.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
