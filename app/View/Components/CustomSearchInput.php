@@ -8,17 +8,16 @@ use Illuminate\View\Component;
 
 class CustomSearchInput extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    public $id;
+    public $name;
+    public $placeholder;
+    public $dataItems;
+
     public function __construct()
     {
         //
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.custom-search-input');
