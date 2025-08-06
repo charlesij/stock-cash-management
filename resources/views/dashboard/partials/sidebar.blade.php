@@ -12,7 +12,7 @@
             <x-sidebar-item.single route="dashboard.index" title="Dashboard" icon="fas fa-home"/>
             <x-sidebar-item.single route="stocks.index" title="Manajemen Stok" icon="fas fa-box"/>
             <x-sidebar-item.single route="transaction.index" title="Transaksi " icon="fas fa-exchange-alt"/>
-            <x-sidebar-item.single route="reports.index" title="Laporan" icon="fas fa-chart-bar"/>
+            {{-- <x-sidebar-item.single route="reports.index" title="Laporan" icon="fas fa-chart-bar"/> --}}
             <x-sidebar-item.single route="customer.index" title="Pelanggan" icon="fas fa-user-tag"/>
             <x-sidebar-item.single route="supplier.index" title="Supplier" icon="fas fa-regular fa-briefcase"/>
 

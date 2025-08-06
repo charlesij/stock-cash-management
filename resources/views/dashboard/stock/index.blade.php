@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="mx-auto px-4 sm:px-6 lg:px-8">
-    
     <x-stock-management.tab-nav />
 
     <div class="mt-4">

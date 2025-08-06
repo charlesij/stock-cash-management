@@ -2,16 +2,14 @@
 
 @section('content')
 <div class="mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="mb-2">
-        <h1 class="text-2xl font-semibold text-gray-900">Inventory Settings</h1>
-    </div>
-    
     <x-stock-management.tab-nav />
-
-    <div class="mt-6">
-        <div class="bg-white shadow-sm rounded-lg p-6">
-            <p class="text-gray-500">Inventory settings content will be displayed here.</p>
+    
+    <div class="mt-4">
+        <div class="flex space-between mb-4">
+            <h1 class="text-2xl font-semibold text-gray-900">Unit Settings</h1>
         </div>
+
+        
     </div>
 </div>
 @endsection
