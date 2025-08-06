@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama')->nullable();
             $table->string('alamat')->nullable();
             $table->string('no_telp')->nullable();
+            $table->decimal('hutang', 15,0)->nullable();
             $table->enum('jenis', ['customer', 'supplier']);
             $table->timestamps();
         });
