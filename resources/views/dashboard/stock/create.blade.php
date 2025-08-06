@@ -39,7 +39,7 @@
                 :options="$supplier"
             >
                 @foreach ($supplier as $item)
-                    <div class="supplier-option px-3 py-2 hover:bg-gray-100 cursor-pointer" data-value="{{ $item->id }}" data-name="{{ $item->nama }}">
+                    <div class="supplier-option px-3 py-2 hover:bg-gray-100 cursor-pointer" data-value="{{ $item->nama }}" data-name="{{ $item->nama }}">
                         {{ $item->nama }}
                     </div>
                 @endforeach
@@ -77,7 +77,7 @@
                     :options="$satuan"
                 >
                     @foreach ($satuan as $item)
-                        <div class="satuan-option px-3 py-2 hover:bg-gray-100 cursor-pointer" data-value="{{ $item->id }}" data-name="{{ $item->nama }}">
+                        <div class="satuan-option px-3 py-2 hover:bg-gray-100 cursor-pointer" data-value="{{ $item->nama }}" data-name="{{ $item->nama }}">
                             {{ $item->nama }}
                         </div>
                     @endforeach
@@ -103,7 +103,8 @@
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                         required>
                 </div>
-                <div class="mt-2 col-span-3">
+                <div class="col-span-3">
+                    <div id="total_preview" class="text-right text-gray-600 mb-2"></div>
                     <button type="button" id="add_unit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
                         <i class="fas fa-plus mr-2"></i>
                         Tambah Unit
@@ -127,10 +128,11 @@
                 <input type="hidden" name="item_name" target-id="nama">
                 <input type="hidden" name="item_harga_beli" target-id="harga_beli">
                 <input type="hidden" name="item_tanggal_masuk" target-id="tanggal_masuk">
-                <input type="hidden" name="item_supplier" target-id="supplier">
-                <input type="hidden" name="item_satuan" target-id="satuan">
+                <input type="hidden" name="item_supplier" target-id="supplier_search">
                 <input type="hidden" name="item_kuantitas" target-id="kuantitas">
+                <input type="hidden" name="item_unit_satuan" target-id="satuan_search">
                 <input type="hidden" name="item_harga_jual" target-id="harga_jual">
+                <input type="hidden" name="item_keterangan" target-id="keterangan">
                 <a href="{{ route('stocks.index') }}" 
                     class="inline-flex items-center px-4 py-2 mr-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition">
                     Cancel
@@ -143,5 +145,47 @@
         </form>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#nama').on('input', function() {
+        $('input[name="item_name"]').val($(this).val());
+    });
+
+    $('#harga_beli').on('input', function() {
+        $('input[name="item_harga_beli"]').val($(this).val());
+    });
+
+    $('#tanggal_masuk').on('input change', function() {
+        $('input[name="item_tanggal_masuk"]').val($(this).val());
+    });
+
+    $('.supplier-option').on('click', function() {
+        const nama = $(this).data('value');
+        $('#supplier').attr('data-selected-id', nama);
+        $('input[name="item_supplier"]').val(nama);
+    });
+    
+    $('.satuan-option').on('click', function() {
+        const satuan = $(this).data('value');
+        $('#satuan').attr('data-selected-id', satuan);
+        const check = $('input[name="item_unit_satuan"]').val(satuan);
+    });
+
+    $('#kuantitas').on('input', function() {
+        var id = $(this).data('value');
+        $('#supplier').attr('data-selected-id', id);
+        $('input[name="item_kuantitas"]').val($(this).val());
+    });
+
+    $('#harga_jual').on('input', function() {
+        $('input[name="item_harga_jual"]').val($(this).val());
+    });2
+
+    $('#keterangan').on('input', function() {
+        $('input[name="item_keterangan"]').val($(this).val());
+    });
+});
+</script>
 
 @endsection
