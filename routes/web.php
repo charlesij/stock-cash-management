@@ -29,6 +29,13 @@ Route::middleware(WebGuest::class)->group(function () {
 Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(function () {
     Route::get('_dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard.index');
     Route::get('_stocks', [StockController::class, 'stockView'])->name('stocks.index');
+    Route::get('_stocks/create', [StockController::class, 'create'])->name('stock.create');
+    Route::get('_stocks/edit', [StockController::class, 'redirectIndex']);
+    Route::post('_stocks/edit', [StockController::class, 'edit'])->name('stock.edit');
+    Route::put('_stocks/edit', [StockController::class, 'update'])->name('stock.update');
+    Route::post('_stocks/delete', [StockController::class, 'delete'])->name('stock.delete');
+    Route::get('_stocks/_settings', [StockController::class, 'settingsView'])->name('stocks.settings');
+    Route::get('_stocks/_history', [StockController::class, 'historyView'])->name('stocks.history');
 
     Route::get('_transaction/', [TransactionController::class, 'transactionView'])->name('transaction.index');
     Route::get('_transaction/_cashflow', [TransactionController::class, 'cashflowView'])->name('transaction.cashflow');
