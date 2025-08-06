@@ -3,14 +3,14 @@
 @section('content')
 <div class="flex-1 px-6 bg-gray-100 relative">
     <div class="mb-6">
-        <h1 class="text-2xl font-semibold text-gray-900">Tambah Supplier</h1>
+        <h1 class="text-2xl font-semibold text-gray-900">Add Supplier</h1>
     </div>
 
     <form action="{{ route('supplier.store') }}" method="POST" class="bg-white shadow rounded-xl p-6">
         @csrf
 
         <div class="mb-4">
-            <label for="nama" class="block text-gray-700 font-semibold mb-2">Nama Supplier</label>
+            <label for="nama" class="block text-gray-700 font-semibold mb-2">Supplier Name</label>
             <input type="text" name="nama" id="nama" value="{{ old('nama') }}"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="mb-4">
-            <label for="alamat" class="block text-gray-700 font-semibold mb-2">Alamat</label>
+            <label for="alamat" class="block text-gray-700 font-semibold mb-2">Address</label>
             <textarea name="alamat" id="alamat" rows="3"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required>{{ old('alamat') }}</textarea>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="mb-6">
-            <label for="no_telp" class="block text-gray-700 font-semibold mb-2">No. Telepon</label>
+            <label for="no_telp" class="block text-gray-700 font-semibold mb-2">Contact Number</label>
             <input type="text" name="no_telp" id="no_telp" value="{{ old('no_telp') }}"
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required>
@@ -46,7 +46,7 @@
             </a>
             <button type="submit" 
                 class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 transition">
-                Simpan
+                Save
             </button>
         </div>
     </form>

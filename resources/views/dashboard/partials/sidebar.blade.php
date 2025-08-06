@@ -13,8 +13,8 @@
             <x-sidebar-item.single route="stocks.index" title="Stock Management" icon="fas fa-box"/>
             <x-sidebar-item.single route="transaction.index" title="Transactions" icon="fas fa-exchange-alt"/>
             <x-sidebar-item.single route="reports.index" title="Reports" icon="fas fa-chart-bar"/>
-            <x-sidebar-item.single route="customer.index" title="Customer" icon="fas fa-chart-bar"/>
-            <x-sidebar-item.single route="supplier.index" title="Supplier" icon="fas fa-chart-bar"/>
+            <x-sidebar-item.single route="customer.index" title="Customer" icon="fas fa-user-tag"/>
+            <x-sidebar-item.single route="supplier.index" title="Supplier" icon="fas fa-regular fa-briefcase"/>
 
             {{-- <div class="mt-2">
                 <button class="flex items-center px-4 py-3 w-full hover:bg-gray-700 rounded-lg" onclick="toggleSubmenu('exampleSubmenu')">

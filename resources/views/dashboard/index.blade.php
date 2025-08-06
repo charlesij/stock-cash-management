@@ -1,7 +1,7 @@
 @extends('dashboard.layout.main')
 
 @section('content')
-<div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="mx-auto px-4 sm:px-6 lg:px-8">
     <div class="mb-6">
         <h1 class="text-2xl font-semibold text-gray-900">Dashboard Overview</h1>
         <p class="text-sm text-gray-600">Welcome back, {{ auth()->user()->name }}!</p>

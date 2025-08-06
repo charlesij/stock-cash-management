@@ -8,7 +8,7 @@
 @endphp
 <div>
     <a href="{{ route($route) }}" class="flex items-center px-4 py-3 mt-2 {{ $active }}">
-        <i class="{{ $icon }}"></i>
-        <span class="mx-4">{{ $title }}</span>
+        <i class="w-4 {{ $icon }}"></i>
+        <span class=" mx-4">{{ $title }}</span>
     </a>
 </div>
