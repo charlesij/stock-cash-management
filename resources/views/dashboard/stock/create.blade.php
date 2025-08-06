@@ -3,7 +3,7 @@
 @section('content')
 <div class="flex-1 px-6 bg-gray-100 relative">
     <div class="mb-6">
-        <h1 class="text-2xl font-semibold text-gray-900">Tambah Stock</h1>
+        <h1 class="text-2xl font-semibold text-gray-900">Tambah Barang</h1>
     </div>
 
     <div class="bg-white shadow rounded-xl p-6">
@@ -11,28 +11,29 @@
             @csrf
             <div class="grid grid-cols-2 gap-4">
                 <div class="mb-4">
-                    <label for="nama" class="block text-gray-700 font-semibold mb-2">Nama Item</label>
+                    <label for="nama" class="block text-gray-700 font-semibold mb-2">Nama Item / Barang</label>
                     <input type="text" name="nama" id="nama" value="{{ old('nama') }}" placeholder="Input Nama Item"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                         required>
                 </div>
     
                 <div class="mb-4">
-                    <label for="nama" class="block text-gray-700 font-semibold mb-2">Harga</label>
+                    <label for="harga_beli" class="block text-gray-700 font-semibold mb-2">Harga Beli</label>
                     <input type="number" name="harga_beli" id="harga_beli" value="{{ old('harga_beli') }}" placeholder="Input harga beli per unit"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                         required>
                 </div>
+                
         
                 <div class="mb-4">
-                    <label for="satuan" class="block text-gray-700 font-semibold mb-2">Unit</label>
+                    <label for="satuan_search" class="block text-gray-700 font-semibold mb-2">Unit</label>
                     <div class="relative">
                         <div class="flex items-center border border-gray-300 rounded-md">
                             <div class="relative flex-1">
                                 <div class="relative w-full">
                                     <input type="text" id="satuan_search" 
                                         class="w-full border-none rounded-l-md pl-3 pr-8 py-2 focus:outline-none" 
-                                        placeholder="Search or create new unit..." autocomplete="off">
+                                        placeholder="Cari atau buat satuan unit..." autocomplete="off">
                                     <input type="hidden" name="satuan" id="satuan_value">
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                         <i class="fa-solid fa-chevron-down text-gray-400"></i>
@@ -60,16 +61,23 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="mb-4">
+                    <label for="harga_jual" class="block text-gray-700 font-semibold mb-2">Harga Jual</label>
+                    <input type="number" name="harga_jual" id="harga_jual" value="{{ old('harga_jual') }}" placeholder="Input harga jual per unit"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        required>
+                </div>
     
                 <div class="mb-4">
-                    <label for="pembelian" class="block text-gray-700 font-semibold mb-2">Jenis Pembelian</label>
+                    <label for="pembelian_search" class="block text-gray-700 font-semibold mb-2">Jenis Pembelian</label>
                     <div class="relative">
                         <div class="flex items-center border border-gray-300 rounded-md">
                             <div class="relative flex-1">
                                 <div class="relative w-full">
                                     <input type="text" id="pembelian_search" 
                                         class="w-full border-none rounded-l-md pl-3 pr-8 py-2 focus:outline-none" 
-                                        placeholder="Search or create new pembelian..." autocomplete="off">
+                                        placeholder="Pilih jenis pembelian..." autocomplete="off">
                                     <input type="hidden" name="pembelian" id="pembelian_value">
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                         <i class="fa-solid fa-chevron-down text-gray-400"></i>
@@ -100,14 +108,14 @@
                 </div>
     
                 <div class="mb-4">
-                    <label for="supllier" class="block text-gray-700 font-semibold mb-2">Supplier</label>
+                    <label for="supllier_search" class="block text-gray-700 font-semibold mb-2">Supplier</label>
                     <div class="relative">
                         <div class="flex items-center border border-gray-300 rounded-md">
                             <div class="relative flex-1">
                                 <div class="relative w-full">
                                     <input type="text" id="supllier_search" 
                                         class="w-full border-none rounded-l-md pl-3 pr-8 py-2 focus:outline-none" 
-                                        placeholder="Search or create new unit..." autocomplete="off">
+                                        placeholder="Cari atau tambah supplier..." autocomplete="off">
                                     <input type="hidden" name="supllier" id="supllier_value">
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                         <i class="fa-solid fa-chevron-down text-gray-400"></i>
@@ -137,6 +145,27 @@
                             class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg max-h-48 overflow-y-auto hidden">
                         </div>
                     </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="biaya_tambahan" class="block text-gray-700 font-semibold mb-2">Biaya Tambahan</label>
+                    <input type="number" name="biaya_tambahan" id="biaya_tambahan" value="{{ old('biaya_tambahan') }}" placeholder="Input biaya tambahan (opsional)"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="tanggal_masuk" class="block text-gray-700 font-semibold mb-2">Tanggal Barang Masuk</label>
+                    <input type="date" name="tanggal_masuk" id="tanggal_masuk" value="{{ old('tanggal_masuk') }}"
+                        class="w-full text-gray-500 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        required>
+                </div>
+
+                <div class="mb-4 col-span-2">
+                    <label for="keterangan" class="block text-gray-700 font-semibold mb-2">Keterangan</label>
+                    <textarea name="keterangan" id="keterangan" placeholder="Tambahkan keterangan (opsional)" rows="3"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        required></textarea>
                 </div>
     
                 <div id="add_unit_modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden">
@@ -171,7 +200,7 @@
             </div>
     
             <div class="flex justify-end">
-                <a href="#" 
+                <a href="{{ route('stocks.index') }}" 
                     class="inline-flex items-center px-4 py-2 mr-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition">
                     Cancel
                 </a>
