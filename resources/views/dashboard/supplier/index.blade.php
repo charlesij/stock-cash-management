@@ -46,8 +46,8 @@
                                     <input type="checkbox" value="{{ $item->id }}" class="rounded border-gray-300 text-blue-600 shadow-sm h-5 w-5 transition duration-150 ease-in-out cursor-pointer checkbox-target">
                                 </td>
                                 <td class="px-6 py-4 text-gray-500">{{ $item->nama }}</td>
-                                <td class="px-6 py-4 text-gray-500">{{ $item->alamat }}</td>
-                                <td class="px-6 py-4 text-gray-500">{{ $item->debt }}</td>
+                                <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">{{ $item->alamat }}</td>
+                                <td class="px-6 py-4 text-gray-500">{{ $item->hutang == 0 ? '-' : $item->hutang }}</td>
                                 <td class="px-6 py-4 text-gray-500">{{ $item->no_telp }}</td>
                             </tr>
                         @endforeach
@@ -58,11 +58,7 @@
                     @endif
                 </tbody>
             </table>
-            @if ($data->count() > 0)
-                <div class="p-6">
-                    {{ $data->links() }}
-                </div>
-            @endif
+                {{ $data->links() }}
         </div>
     </div>
 </div>

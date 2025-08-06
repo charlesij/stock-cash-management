@@ -32,6 +32,7 @@
 
     @vite('resources/js/app.js')
     <script src="{{ asset('script.js') }}"></script>
+    <script src="{{ asset('js/components/custom-search-input.js') }}"></script>
     @if (session('success'))
         <script>
             Swal.fire({

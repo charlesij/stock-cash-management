@@ -52,6 +52,7 @@
                         <thead class="bg-gray-700 text-gray-100 uppercase text-xs">
                             <tr>
                                 <th class="px-6 py-3 text-left">Tanggal</th>
+                                <th class="px-6 py-3 text-left">Jatuh Tempo</th>
                                 <th class="px-6 py-3 text-left">Jenis Transaksi</th>
                                 <th class="px-6 py-3 text-left">Keterangan</th>
                                 <th class="px-6 py-3 text-left">Supplier</th>
@@ -62,6 +63,7 @@
                         <tbody class="divide-y divide-gray-100">
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">8 Agustus 2025</td>
                                 <td class="px-6 py-4 text-gray-500">Transaksi Hutang</td>
                                 <td class="px-6 py-4 text-gray-500">Gaji Karyawan</td>
                                 <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">Kantor</td>
@@ -70,6 +72,7 @@
                             </tr>
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">6 September 2025</td>
                                 <td class="px-6 py-4 text-gray-500">Pembayaran Hutang</td>
                                 <td class="px-6 py-4 text-gray-500">Pelunasan</td>
                                 <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">PT Global Pasifik Prima</td>
@@ -78,6 +81,7 @@
                             </tr>
                             <tr>
                                 <td class="px-6 py-4 text-gray-500">2 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">6 September 2025</td>
                                 <td class="px-6 py-4 text-gray-500">Transaksi Hutang</td>
                                 <td class="px-6 py-4 text-gray-500">Pengambilan Barang</td>
                                 <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">PT Global Pasifik Prima</td>
