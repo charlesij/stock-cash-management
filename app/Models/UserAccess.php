@@ -8,9 +8,10 @@ class UserAccess extends Model
 {
     protected $table = 'user_accesses';
     protected $fillable = [
-        'user_id',
-        'access_id',
-        'created_at',
-        'updated_at',
+        'access_name',
+        'access_menu',
+        'access_description',
+        'access_status',
     ];
+
 }

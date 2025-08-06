@@ -9,7 +9,7 @@ class StockController extends Controller
     public function stockView()
     {
         $breadcrumb = [
-            ['name' => 'Stock', 'url' => route('stocks')],
+            ['name' => 'Stock', 'url' => route('stocks.index')],
         ];
         return view('dashboard.stock.index', [
             'breadcrumb' => $breadcrumb

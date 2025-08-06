@@ -1,7 +1,7 @@
 @extends('dashboard.layout.main')
 
 @section('content')
-<div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="mx-auto px-4 sm:px-6 lg:px-8">
     <div class="mb-6">
         <h1 class="text-2xl font-semibold text-gray-900">Dashboard Overview</h1>
         <p class="text-sm text-gray-600">Welcome back, {{ auth()->user()->name }}!</p>
@@ -33,7 +33,7 @@
         </div>
 
         <div title="Go to debt details" class="bg-white rounded-xl shadow-sm border-l-4 border-red-500 overflow-hidden transform transition-transform duration-300 hover:-translate-y-1">
-            <a href="#">
+            <a href="{{ route('transaction.debt') }}">
                 <div class="p-5">
                     <div class="flex items-center justify-between">
                         <div>
@@ -60,7 +60,7 @@
     <!-- Quick Access Buttons -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <!-- Stock Management Button Card -->
-        <a href="{{ route('stocks') }}" class="group">
+        <a href="{{ route('stocks.index') }}" class="group">
             <div class="bg-white rounded-xl shadow-sm p-5 transition-all duration-200 hover:shadow-md">
                 <div class="flex items-center justify-between mb-4">
                     <div>
