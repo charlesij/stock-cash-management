@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('supplier', function (Blueprint $table) {
@@ -16,6 +13,7 @@ return new class extends Migration
             $table->string('nama')->nullable();
             $table->string('alamat')->nullable();
             $table->string('no_telp')->nullable();
+            $table->decimal('debt', 15, 0)->default(0);
             $table->timestamps();
         });
     }

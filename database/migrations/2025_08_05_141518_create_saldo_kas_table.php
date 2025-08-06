@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('saldo_kas', function (Blueprint $table) {
             $table->id();
-            $table->integer('cash');
-            $table->integer('hutang');
-            $table->date('date');
+            $table->decimal('cash', 15, 0)->default(0);
+            $table->decimal('hutang', 15, 0)->default(0);
+            $table->date('date'); // month and year only
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });
