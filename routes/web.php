@@ -51,17 +51,17 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::get('_profile', [ProfileController::class, 'profileView'])->name('profile.index');
     
     // master
-    Route::get('supplier', [SupplierController::class, 'index'])->name('supplier.index');
-    Route::get('supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
-    Route::get('supplier/edit', [SupplierController::class, 'redirectIndex']);
-    Route::post('supplier/edit', [SupplierController::class, 'edit'])->name('supplier.edit');
-    Route::put('supplier/edit', [SupplierController::class, 'update'])->name('supplier.update');
-    Route::post('supplier/delete', [SupplierController::class, 'delete'])->name('supplier.delete');
-    Route::post('supplier/create', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::get('_supplier', [SupplierController::class, 'index'])->name('supplier.index');
+    Route::get('_supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+    Route::get('_supplier/edit', [SupplierController::class, 'redirectIndex']);
+    Route::post('_supplier/edit', [SupplierController::class, 'edit'])->name('supplier.edit');
+    Route::put('_supplier/edit', [SupplierController::class, 'update'])->name('supplier.update');
+    Route::post('_supplier/delete', [SupplierController::class, 'delete'])->name('supplier.delete');
+    Route::post('_supplier/create', [SupplierController::class, 'store'])->name('supplier.store');
 
-    Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
-    Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');
-    Route::post('customer/create', [CustomerController::class, 'store'])->name('customer.store');
+    Route::get('_customer', [CustomerController::class, 'index'])->name('customer.index');
+    Route::get('_customer/create', [CustomerController::class, 'create'])->name('customer.create');
+    Route::post('_customer/create', [CustomerController::class, 'store'])->name('customer.store');
 
     Route::post('_logout', [AuthController::class, 'authLogout'])->name('logout');
 });
