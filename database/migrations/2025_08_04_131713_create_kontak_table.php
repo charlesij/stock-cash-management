@@ -13,12 +13,8 @@ return new class extends Migration
             $table->string('nama')->nullable();
             $table->string('alamat')->nullable();
             $table->string('no_telp')->nullable();
-<<<<<<< HEAD:database/migrations/2025_08_04_131713_create_supplier_table.php
-            $table->decimal('debt', 15, 0)->default(0);
-=======
             $table->decimal('hutang', 15,0)->nullable();
             $table->enum('jenis', ['customer', 'supplier']);
->>>>>>> 2266788db5fcd01619cf82e9febfff76d515b30a:database/migrations/2025_08_04_131713_create_kontak_table.php
             $table->timestamps();
         });
     }

@@ -63,9 +63,6 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');
     Route::post('customer/create', [CustomerController::class, 'store'])->name('customer.store');
 
-    Route::get('akun', [AkunController::class, 'index'])->name('akun.index');
-    Route::get('transaksiakun/{sub_akun_id}', [AkunController::class, 'transaksiakun'])->name('akun.transaksiakun');
-
     Route::post('_logout', [AuthController::class, 'authLogout'])->name('logout');
 });
 
