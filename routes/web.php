@@ -59,8 +59,12 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::post('supplier/delete', [SupplierController::class, 'delete'])->name('supplier.delete');
     Route::post('supplier/create', [SupplierController::class, 'store'])->name('supplier.store');
 
-    Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
+     Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
     Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');
+    Route::get('customer/edit', [CustomerController::class, 'redirectIndex']);
+    Route::post('customer/edit', [CustomerController::class, 'edit'])->name('customer.edit');
+    Route::put('customer/edit', [CustomerController::class, 'update'])->name('customer.update');
+    Route::post('customer/delete', [CustomerController::class, 'delete'])->name('customer.delete');
     Route::post('customer/create', [CustomerController::class, 'store'])->name('customer.store');
 
     Route::post('_logout', [AuthController::class, 'authLogout'])->name('logout');
