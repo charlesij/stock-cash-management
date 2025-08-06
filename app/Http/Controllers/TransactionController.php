@@ -51,4 +51,13 @@ class TransactionController extends Controller
             'breadcrumb' => $breadcrumb
         ]);
     }
+    public function historyView()
+    {
+        $breadcrumb = [
+            ['name' => 'Transaction', 'url' => route('transaction.history')],
+        ];
+        return view('dashboard.transaction.history', [
+            'breadcrumb' => $breadcrumb
+        ]);
+    }
 }
