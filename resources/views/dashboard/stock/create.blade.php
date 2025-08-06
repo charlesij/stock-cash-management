@@ -24,14 +24,17 @@
                         required>
                 </div>
 
+                
+{{--                 
+
                 <div class="mb-4">
                     <label for="kuantitas" class="block text-gray-700 font-semibold mb-2">Kuantitas</label>
                     <input type="number" name="kuantitas" id="kuantitas" value="{{ old('kuantitas') }}" placeholder="Input kuantitas"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                         required>
-                </div>
+                </div> --}}
                 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label for="satuan_search" class="block text-gray-700 font-semibold mb-2">Unit</label>
                     <div class="relative">
                         <div class="flex items-center border border-gray-300 rounded-md">
@@ -66,14 +69,14 @@
                             class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg max-h-48 overflow-y-auto hidden">
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label for="harga_jual" class="block text-gray-700 font-semibold mb-2">Harga Jual</label>
                     <input type="number" name="harga_jual" id="harga_jual" value="{{ old('harga_jual') }}" placeholder="Input harga jual per unit"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                         required>
-                </div>
+                </div> --}}
     
                 <div class="mb-4">
                     <label for="pembelian_search" class="block text-gray-700 font-semibold mb-2">Jenis Pembelian</label>
@@ -153,12 +156,12 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label for="biaya_tambahan" class="block text-gray-700 font-semibold mb-2">Biaya Tambahan</label>
                     <input type="number" name="biaya_tambahan" id="biaya_tambahan" value="{{ old('biaya_tambahan') }}" placeholder="Input biaya tambahan (opsional)"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                         required>
-                </div>
+                </div> --}}
 
                 <div class="mb-4">
                     <label for="tanggal_masuk" class="block text-gray-700 font-semibold mb-2">Tanggal Barang Masuk</label>
@@ -167,9 +170,9 @@
                         required>
                 </div>
 
-                {{-- <div class="grid grid-cols-2 col-span-2 gap-4 border-2 border-dashed border-gray-300 rounded-md p-4">
+                <div class="grid grid-cols-3 col-span-2 gap-4 border-2 border-dashed border-gray-300 rounded-md p-4">
                     <div class="mb-4">
-                        <label for="satuan_search" class="block text-gray-700 font-semibold mb-2">Unit</label>
+                        <label for="satuan_search" class="block text-gray-700 font-semibold mb-2">Unit [Master]</label>
                         <div class="relative">
                             <div class="flex items-center border border-gray-300 rounded-md">
                                 <div class="relative flex-1">
@@ -204,6 +207,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-4">
+                        <label for="kuantitas" class="block text-gray-700 font-semibold mb-2">Kuantitas</label>
+                        <input type="number" name="kuantitas" id="kuantitas" value="{{ old('kuantitas') }}" placeholder="Input kuantitas"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            required>
+                    </div>
 
                     <div class="mb-4">
                         <label for="harga_jual" class="block text-gray-700 font-semibold mb-2">Harga Jual</label>
@@ -211,14 +220,14 @@
                             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                             required>
                     </div>
-
-                    <div class="mb-4 col-span-2">
-                        <label for="kuantitas" class="block text-gray-700 font-semibold mb-2">Kuantitas</label>
-                        <input type="number" name="kuantitas" id="kuantitas" value="{{ old('kuantitas') }}" placeholder="Input kuantitas"
-                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            required>
+                    <div class="mt-2 col-span-3">
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+                            <i class="fas fa-plus mr-2"></i>
+                            Tambah Unit
+                        </button>
                     </div>
-                </div> --}}
+                </div>
+                
 
                 <div class="mb-4 col-span-2">
                     <label for="keterangan" class="block text-gray-700 font-semibold mb-2">Keterangan</label>
