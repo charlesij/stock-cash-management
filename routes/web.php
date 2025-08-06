@@ -30,6 +30,9 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::get('_dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard.index');
     Route::get('_stocks', [StockController::class, 'stockView'])->name('stocks.index');
     Route::get('_stocks/create', [StockController::class, 'create'])->name('stock.create');
+    Route::post('_stocks/create', [StockController::class, 'store'])->name('stock.store');
+    Route::post('_stock/create/satuan', [StockController::class, 'createSatuan'])->name('stock.create.satuan');
+    Route::get('_stocks/create/test', [StockController::class, 'createTest'])->name('stock.create.test');
     Route::get('_stocks/edit', [StockController::class, 'redirectIndex']);
     Route::post('_stocks/edit', [StockController::class, 'edit'])->name('stock.edit');
     Route::put('_stocks/edit', [StockController::class, 'update'])->name('stock.update');
@@ -50,14 +53,13 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::get('_settings', [SettingController::class, 'settingView'])->name('settings.index');
     Route::get('_profile', [ProfileController::class, 'profileView'])->name('profile.index');
     
-    // master
     Route::get('_supplier', [SupplierController::class, 'index'])->name('supplier.index');
     Route::get('_supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+    Route::post('_supplier/create', [SupplierController::class, 'store'])->name('supplier.store');
     Route::get('_supplier/edit', [SupplierController::class, 'redirectIndex']);
     Route::post('_supplier/edit', [SupplierController::class, 'edit'])->name('supplier.edit');
     Route::put('_supplier/edit', [SupplierController::class, 'update'])->name('supplier.update');
     Route::post('_supplier/delete', [SupplierController::class, 'delete'])->name('supplier.delete');
-    Route::post('_supplier/create', [SupplierController::class, 'store'])->name('supplier.store');
 
     Route::get('_customer', [CustomerController::class, 'index'])->name('customer.index');
     Route::get('_customer/create', [CustomerController::class, 'create'])->name('customer.create');
