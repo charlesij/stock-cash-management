@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produk_detail', function (Blueprint $table) {
+        Schema::create('stock_detail', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('produk_id')->unsigned();
+            $table->bigInteger('stock_id')->unsigned();
             $table->bigInteger('satuan_id')->unsigned();
-            $table->bigInteger('quantity')->default(0);
+            $table->bigInteger('kuantitas')->default(0);
             $table->decimal('harga_jual', 15)->default(0);
 
             $table->timestamps();
 
-             $table->foreign('produk_id')->references('id')->on('produk')
+             $table->foreign('stock_id')->references('id')->on('stock')
              ->onDelete('restrict') 
              ->onUpdate('cascade');
 
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produk_detail');
+        Schema::dropIfExists('stock_detail');
     }
 };
