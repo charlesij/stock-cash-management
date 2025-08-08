@@ -12,17 +12,15 @@ class CustomSearchInput extends Component
     public $name;
     public $placeholder;
     public $addButton;
-    public $options;
-    public $formActionName;
-    public $formActionMethod;
+    public ?string $formActionName;
+    public ?string $formActionMethod;
 
-    public function __construct($id, $name, $placeholder, $addButton, $options, $formActionName, $formActionMethod)
+    public function __construct($id, $name, $placeholder, $addButton, ?string $formActionName, ?string $formActionMethod)
     {
         $this->id = $id;
         $this->name = $name;
         $this->placeholder = $placeholder;
-        $this->addButton = $addButton;
-        $this->options = $options;
+        $this->addButton = $addButton == 'false' ? false : true;
         $this->formActionName = $formActionName;
         $this->formActionMethod = $formActionMethod;
     }
