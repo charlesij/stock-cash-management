@@ -8,20 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('history_transaksis', function (Blueprint $table) {
+        Schema::create('transaksi_hutang', function (Blueprint $table) {
             $table->id();
             $table->foreignId('saldo_kas_id')->constrained('saldo_kas');
-            $table->decimal('cash_in', 15, 0)->default(0);
-            $table->decimal('cash_out', 15, 0)->default(0);
+            $table->string('jenis_transaksi');
+            $table->string('supplier');
+            $table->string('keterangan');
+            $table->date('jatuh_tempo');
             $table->decimal('hutang_in', 15, 0)->default(0);
             $table->decimal('hutang_out', 15, 0)->default(0);
-            $table->text('keterangan')->nullable();
+            $table->decimal('total_hutang', 15, 0)->default(0);
             $table->timestamps();
         });
     }
-
+    
     public function down(): void
     {
-        Schema::dropIfExists('history_transaksis');
+        Schema::dropIfExists('transaksi_hutang');
+        // Schema::dropIfExists('transaksi_hutangs');
     }
 };

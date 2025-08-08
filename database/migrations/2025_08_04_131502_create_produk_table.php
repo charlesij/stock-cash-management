@@ -6,31 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('stock', function (Blueprint $table) {
+        Schema::create('produk', function (Blueprint $table) {
             $table->id();
-            $table->enum('jenis_pembelian', ['cash', 'hutang']);
-            $table->bigInteger('supplier_id')->unsigned();
             $table->string('nama');
             $table->decimal('harga_beli', 15)->default(0);
+            $table->string('metode_pembayaran');
+            $table->string('data_supplier');
+            $table->date('tanggal_barang_masuk');
+            $table->date('tanggal_jatuh_tempo')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
-
-            $table->foreign('supplier_id')->references('id')->on('supplier')
-             ->onDelete('restrict') 
-             ->onUpdate('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('stock');
+        Schema::dropIfExists('produk');
     }
 };

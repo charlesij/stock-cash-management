@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('cash', 15, 0)->default(0);
             $table->decimal('hutang', 15, 0)->default(0);
-            $table->date('date'); // month and year only
+            $table->date('date'); // month and year only (YYYY-MM-01) always use the date 1
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });
