@@ -28,7 +28,7 @@ Route::middleware(WebGuest::class)->group(function () {
 
 Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(function () {
     Route::get('_dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard.index');
-    Route::get('_stocks', [StockController::class, 'stockView'])->name('stocks.index');
+    Route::get('_stocks', [StockController::class, 'stockView'])->name('stock.index');
     Route::get('_stocks/create', [StockController::class, 'create'])->name('stock.create');
     Route::post('_stocks/create', [StockController::class, 'store'])->name('stock.store');
     Route::post('_stock/create/satuan', [StockController::class, 'createSatuan'])->name('stock.create.satuan');
