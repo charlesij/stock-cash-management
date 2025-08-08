@@ -64,6 +64,11 @@
                                 Keterangan kalau kayu ini adalah kayu jati yang berasal dari supplier PT. Jati Jaya.
                             </td>
                         </tr>
+                        {{-- <tr>
+                            <td colspan="6" class="px-6 py-4 text-gray-500 text-center">
+                                Tidak ada data
+                            </td>
+                        </tr> --}}
                     </tbody>
                 </table>
             </div>
