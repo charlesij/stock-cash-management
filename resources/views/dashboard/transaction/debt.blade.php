@@ -10,7 +10,6 @@
 
     <div class="mt-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Card Tambah Cash -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition duration-300">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
@@ -27,7 +26,6 @@
                 </div>
             </div>
 
-            <!-- Card Tambah Produk -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition duration-300">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
@@ -37,7 +35,7 @@
                         </div>
                     </div>
                     <p class="text-gray-600 mb-4">Tambah produk baru ke dalam inventori</p>
-                    <a href="{{ route('stock.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full">
+                    <a href="{{ route('stock.create') }}?method=debt" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full">
                         <i class="fas fa-plus mr-2"></i>
                         Tambah Produk
                     </a>

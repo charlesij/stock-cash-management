@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <p class="text-gray-600 mb-4">Tambahkan atau kurangi saldo kas secara langsung</p>
-                    <a href="#" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full">
+                    <a href="{{ route('transaction.cashflow.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full">
                         <i class="fas fa-plus mr-2"></i>
                         Kelola Cash
                     </a>
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <p class="text-gray-600 mb-4">Tambah produk baru ke dalam inventori</p>
-                    <a href="{{ route('stock.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full">
+                    <a href="{{ route('stock.create') }}?method=cash" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full">
                         <i class="fas fa-plus mr-2"></i>
                         Tambah Produk
                     </a>
@@ -58,7 +58,22 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr class="hover:bg-gray-50">
+                            @if ($saldoKas->count() > 0)
+                                @foreach($saldoKas as $index => $item)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->created_at }}</td>
+                                    <td class="px-6 py-4 text-gray-500 capitalize">{{ $item->jenis_transaksi }}</td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->keterangan }}</td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->cash_in !== 0 ? number_format($item->cash_in, 0, ',', '.') : number_format($item->cash_out, 0, ',', '.') }}</td>  
+                                    <td class="px-6 py-4 text-gray-500">{{ number_format($item->current_saldo, 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="px-6 py-4 text-gray-500 text-center" >Tidak ada transaksi kas</td>
+                                </tr>
+                            @endif
+                            {{-- <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
                                 <td class="px-6 py-4 text-gray-500">Pengeluaran</td>
                                 <td class="px-6 py-4 text-gray-500">Pembayaran Hutang</td>
@@ -85,7 +100,7 @@
                                 <td class="px-6 py-4 text-gray-500">-</td>
                                 <td class="px-6 py-4 text-gray-500">20.000.000</td>  
                                 <td class="px-6 py-4 text-gray-500">20.000.000</td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

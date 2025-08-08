@@ -34,7 +34,7 @@
         </div>
     </div>
 
-
+    @if ($addButton)
     <div id="add_{{ $id }}_modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white py-4 px-6 rounded-lg shadow-2xl w-full max-w-md">
@@ -66,6 +66,7 @@
             </div>
         </div>
     </div>
+    @endif
 
 </div>
 

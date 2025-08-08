@@ -22,11 +22,15 @@
                         </div>
                     </div>
                     <div class="mt-4 flex items-center text-sm">
-                        <span class="{{ $cashTrend >= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
-                            <i class="fas fa-{{ $cashTrend >= 0 ? 'arrow-up' : 'arrow-down' }} mr-1"></i>
-                            {{ abs($cashTrend) }}%
-                        </span>
-                        <span class="text-gray-500 ml-2">vs bulan lalu</span>
+                        @if(is_numeric($cashTrend))
+                            <span class="{{ $cashTrend >= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
+                                <i class="fas fa-{{ $cashTrend >= 0 ? 'arrow-up' : 'arrow-down' }} mr-1"></i>
+                                {{ abs($cashTrend) }}%
+                            </span>
+                            <span class="text-gray-500 ml-2">vs bulan lalu</span>
+                        @elseif($cashTrend === 'no data')
+                            <span class="text-gray-500 ml-2">Tidak ada data trend</span>
+                        @endif
                     </div>
                 </div>
             </a>
@@ -46,11 +50,15 @@
                         </div>
                     </div>
                     <div class="mt-4 flex items-center text-sm">
-                        <span class="{{ $debtTrend <= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
-                            <i class="fas fa-{{ $debtTrend <= 0 ? 'arrow-down' : 'arrow-up' }} mr-1"></i>
-                            {{ abs($debtTrend) }}%
-                        </span>
-                        <span class="text-gray-500 ml-2">vs bulan lalu</span>
+                        @if(is_numeric($debtTrend))
+                            <span class="{{ $debtTrend <= 0 ? 'text-green-500' : 'text-red-500' }} font-medium">
+                                <i class="fas fa-{{ $debtTrend <= 0 ? 'arrow-down' : 'arrow-up' }} mr-1"></i>
+                                {{ abs($debtTrend) }}%
+                            </span>
+                            <span class="text-gray-500 ml-2">vs bulan lalu</span>
+                        @elseif($debtTrend === 'no data')
+                            <span class="text-gray-500 ml-2">Tidak ada data trend</span>
+                        @endif
                     </div>
                 </div>
             </a>
@@ -60,7 +68,7 @@
     
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         
-        <a href="{{ route('stocks.index') }}" class="group">
+        <a href="{{ route('stock.index') }}" class="group">
             <div class="bg-white rounded-xl shadow-sm p-5 transition-all duration-200 hover:shadow-md">
                 <div class="flex items-center justify-between mb-4">
                     <div>

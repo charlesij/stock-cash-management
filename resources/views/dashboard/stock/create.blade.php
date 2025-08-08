@@ -119,52 +119,12 @@
                     </div>
                 </div>
 
-                {{-- Contoh yang harus ditambah dari javascript --}}
-                {{-- <x-custom-search-input 
-                    id="satuan_1"
-                    name="Unit [2]"
-                    placeholder="Cari atau buat satuan unit..."
-                    addButton="true"
-                    formActionName="stock.create.satuan"
-                    formActionMethod="POST"
-                >
-                    @foreach ($satuan as $item)
-                        <div class="satuan-option px-3 py-2 hover:bg-gray-100 cursor-pointer" data-value="{{ $item->nama }}" data-name="{{ $item->nama }}">
-                            {{ $item->nama }}
-                        </div>
-                    @endforeach
-                    <x-slot name="modal">
-                        <div class="mb-4">
-                            <input type="text" id="satuan_unit" name="new_satuan_name" 
-                                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                                placeholder="Enter unit name">
-                        </div>
-                    </x-slot>
-                </x-custom-search-input>
-                
-                <div class="mb-4">
-                    <label for="kuantitas" class="block text-gray-700 font-semibold mb-2">Kuantitas [2]</label>
-                    <input type="number" name="kuantitas" id="kuantitas" value="{{ old('kuantitas') }}" placeholder="Input kuantitas"
-                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="harga_jual" class="block text-gray-700 font-semibold mb-2">Harga Jual [2]</label>
-                    <input type="text" name="harga_jual" id="harga_jual" value="{{ old('harga_jual') }}" placeholder="Input harga jual per unit"
-                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 number-format"
-                        required>
-                </div> --}}
-                {{-- End dari contoh yang harus ditambah dari javascript --}}
-
                 <div class="col-span-3 border-t border-dashed border-gray-300 rounded-md p-4">
-                    {{-- <div class="p-4"> --}}
-                        <div id="total_preview" class="text-right text-gray-600 mb-2"></div>
-                        <button type="button" id="add_unit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
-                            <i class="fas fa-plus mr-2"></i>
-                            Tambah Unit
-                        </button>
-                    {{-- </div> --}}
+                    <div id="total_preview" class="text-right text-gray-600 mb-2"></div>
+                    <button type="button" id="add_unit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        Tambah Unit
+                    </button>
                 </div>
             </div>
             
@@ -175,37 +135,57 @@
                     required></textarea>
             </div>
             
-        </div>
-
-        <form action="{{ route('stock.store') }}" method="POST">
+            <form action="{{ route('stock.store') }}" method="POST" class="col-span-2">
             @csrf
-            <div class="flex justify-end">
+                <!-- Hidden inputs for form data -->
                 <input type="hidden" name="item_name" target-id="nama">
                 <input type="hidden" name="item_harga_beli" target-id="harga_beli">
                 <input type="hidden" name="item_tanggal_masuk" target-id="tanggal_masuk">
                 <input type="hidden" name="item_supplier" target-id="supplier_search">
                 <input type="hidden" name="item_metode_pembayaran" target-id="metode_pembayaran" value="{{ request()->has('method') == 'debt' ? 'hutang' : 'cash' }}">
-                <input type="hidden" name="item_kuantitas[]" target-id="kuantitas">
-                <input type="hidden" name="item_unit_satuan[]" target-id="satuan_search">
-                <input type="hidden" name="item_harga_jual[]" target-id="harga_jual">
                 <input type="hidden" name="item_keterangan" target-id="keterangan">
                 <input type="hidden" name="item_jatuh_tempo" target-id="jatuh_tempo">
-                <a href="{{ route('stocks.index') }}" 
-                    class="inline-flex items-center px-4 py-2 mr-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition">
-                    Cancel
-                </a>
-                <button type="submit" 
-                    class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 transition cursor-pointer">
-                    Save
-                </button>
-            </div>
-        </form>
+                
+                <!-- Array inputs -->
+                <div id="array_inputs">
+                    <input type="hidden" name="item_kuantitas[]" value="">
+                    <input type="hidden" name="item_unit_satuan[]" value="">
+                    <input type="hidden" name="item_harga_jual[]" value="">
+                </div>
+
+                <div class="flex justify-end">
+                    <a href="{{ route('stock.index') }}" 
+                        class="inline-flex items-center px-4 py-2 mr-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 transition cursor-pointer">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <script>
 $(document).ready(function() {
     const urlParams = new URLSearchParams(window.location.search);
+
+    $('#add_unit').on('click', function() {
+        const newFields = `
+            <input type="hidden" name="item_kuantitas[]" value="">
+            <input type="hidden" name="item_unit_satuan[]" value="">
+            <input type="hidden" name="item_harga_jual[]" value="">
+        `;
+        
+        $('#array_inputs').append(newFields);
+        
+        $('#kuantitas').val('');
+        $('#satuan_master').val('').attr('data-selected-id', '');
+        $('#harga_jual').val('');
+    });
+
     const method = urlParams.get('method');
     
     if (method === 'cash') {
@@ -249,21 +229,24 @@ $(document).ready(function() {
         $('input[name="item_metode_pembayaran"]').val(metode);
     });
     
-    $('.satuan-option').on('click', function() {
+    $('.satuan_master-option').on('click', function() {
         const satuan = $(this).data('value');
-        $('#satuan').attr('data-selected-id', satuan);
-        const check = $('input[name="item_unit_satuan[]"]').val(satuan);
+        $('#satuan_master').attr('data-selected-id', satuan);
+        // Set value untuk input array satuan
+        $('input[name="item_unit_satuan[]"]').last().val(satuan);
     });
 
     $('#kuantitas').on('input', function() {
-        var id = $(this).data('value');
-        $('#supplier').attr('data-selected-id', id);
-        $('input[name="item_kuantitas[]"]').val($(this).val());
+        const value = $(this).val();
+        // Set value untuk input array kuantitas
+        $('input[name="item_kuantitas[]"]').last().val(value);
     });
 
     $('#harga_jual').on('input', function() {
-        const cleanValue = $(this).val().replace(/\./g, '');
-        $('input[name="item_harga_jual[]"]').val(cleanValue);
+        const value = $(this).val();
+        const cleanValue = value.replace(/\./g, '');
+        // Set value untuk input array harga jual
+        $('input[name="item_harga_jual[]"]').last().val(cleanValue);
     });
 
     $('#keterangan').on('input', function() {
