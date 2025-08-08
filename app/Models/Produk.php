@@ -9,7 +9,16 @@ class Produk extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['satuan_id', 'nama', 'harga_beli'];
+    protected $fillable = [
+        'nama', 
+        'harga_beli',
+        'metode_pembayaran',
+        'data_supplier',
+        'tanggal_barang_masuk',
+        'tanggal_jatuh_tempo',
+        'keterangan',
+    ];
+
     protected $table = 'produk';
     
     public function satuan()
