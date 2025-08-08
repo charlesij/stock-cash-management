@@ -51,7 +51,11 @@ class SupplierController extends Controller
             
             Supplier::create($allReq);
     
-            return redirect()->route('supplier.index')->with('success', 'Supplier created successfully');
+            if ($request->send_from == 'create_stock') {
+                return redirect()->route('stock.create')->with('success', 'Supplier created successfully');
+            } else {
+                return redirect()->route('supplier.index')->with('success', 'Supplier created successfully');
+            }
         } catch (\Exception $e) {
             return redirect()->route('supplier.index')->with('error', 'Supplier created failed: ' . $e->getMessage());
         }
