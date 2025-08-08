@@ -32,7 +32,6 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
     Route::get('_stocks/create', [StockController::class, 'create'])->name('stock.create');
     Route::post('_stocks/create', [StockController::class, 'store'])->name('stock.store');
     Route::post('_stock/create/satuan', [StockController::class, 'createSatuan'])->name('stock.create.satuan');
-    Route::get('_stocks/create/test', [StockController::class, 'createTest'])->name('stock.create.test');
     Route::get('_stocks/edit', [StockController::class, 'redirectIndex']);
     Route::post('_stocks/edit', [StockController::class, 'edit'])->name('stock.edit');
     Route::put('_stocks/edit', [StockController::class, 'update'])->name('stock.update');
@@ -42,6 +41,9 @@ Route::middleware([WebAuthenticate::class, DashboardAccess::class])->group(funct
 
     Route::get('_transaction/', [TransactionController::class, 'transactionView'])->name('transaction.index');
     Route::get('_transaction/_cashflow', [TransactionController::class, 'cashflowView'])->name('transaction.cashflow');
+    Route::get('_transaction/_cashflow/create', [TransactionController::class, 'cashflowCreate'])->name('transaction.cashflow.create');
+    Route::post('_transaction/_cashflow/create', [TransactionController::class, 'cashflowStore'])->name('transaction.cashflow.store');
+    Route::post('_transaction/_cashflow/update', [TransactionController::class, 'cashflowUpdate'])->name('transaction.cashflow.update');
     Route::get('_transaction/_debt', [TransactionController::class, 'debtView'])->name('transaction.debt');
     Route::get('_transaction/_income', [TransactionController::class, 'incomeView'])->name('transaction.income');
     Route::get('_transaction/_expenses', [TransactionController::class, 'expensesView'])->name('transaction.expenses');
