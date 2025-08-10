@@ -61,10 +61,10 @@
                             @if ($saldoKas->count() > 0)
                                 @foreach($saldoKas as $index => $item)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 text-gray-500">{{ $item->created_at }}</td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->created_at->format('Y-m-d') }}</td>
                                     <td class="px-6 py-4 text-gray-500 capitalize">{{ $item->jenis_transaksi }}</td>
                                     <td class="px-6 py-4 text-gray-500">{{ $item->keterangan }}</td>
-                                    <td class="px-6 py-4 text-gray-500">{{ $item->cash_in !== 0 ? number_format($item->cash_in, 0, ',', '.') : number_format($item->cash_out, 0, ',', '.') }}</td>  
+                                    <td class="px-6 py-4 {{ $item->cash_in != 0 ? 'text-green-500' : 'text-red-500' }}">{{ $item->cash_in != 0 ? number_format($item->cash_in, 0, ',', '.') : number_format($item->cash_out, 0, ',', '.') }}</td>  
                                     <td class="px-6 py-4 text-gray-500">{{ number_format($item->current_saldo, 0, ',', '.') }}</td>
                                 </tr>
                                 @endforeach
@@ -73,34 +73,6 @@
                                     <td colspan="5" class="px-6 py-4 text-gray-500 text-center" >Tidak ada transaksi kas</td>
                                 </tr>
                             @endif
-                            {{-- <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
-                                <td class="px-6 py-4 text-gray-500">Pengeluaran</td>
-                                <td class="px-6 py-4 text-gray-500">Pembayaran Hutang</td>
-                                <td class="px-6 py-4 text-gray-500">10.000.000</td>  
-                                <td class="px-6 py-4 text-gray-500">10.100.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-gray-500">5 Agustus 2025</td>
-                                <td class="px-6 py-4 text-gray-500">Pendapatan</td>
-                                <td class="px-6 py-4 text-gray-500">Penjualan Produk</td>
-                                <td class="px-6 py-4 text-gray-500">200.000</td>  
-                                <td class="px-6 py-4 text-gray-500">20.100.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-gray-500">1 Agustus 2025</td>
-                                <td class="px-6 py-4 text-gray-500">Pengeluaran</td>
-                                <td class="px-6 py-4 text-gray-500">Pembelian Produk</td>
-                                <td class="px-6 py-4 text-gray-500">100.000</td>  
-                                <td class="px-6 py-4 text-gray-500">19.900.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-gray-500">1 Agustus 2025</td>
-                                <td class="px-6 py-4 text-gray-500">Modal Masuk</td>
-                                <td class="px-6 py-4 text-gray-500">-</td>
-                                <td class="px-6 py-4 text-gray-500">20.000.000</td>  
-                                <td class="px-6 py-4 text-gray-500">20.000.000</td>
-                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

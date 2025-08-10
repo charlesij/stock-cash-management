@@ -37,32 +37,34 @@
     @if ($addButton)
     <div id="add_{{ $id }}_modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white py-4 px-6 rounded-lg shadow-2xl w-full max-w-md">
-                <div class="pb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Tambah {{ $name }}</h3>
-                </div>
-                
-                <form id="add_{{ $id }}_form" action="{{ route($formActionName) }}" method="POST">
-                    @if ($formActionMethod === 'POST')
-                        @csrf
-                    @else
-                        @method($formActionMethod)
-                        @csrf
-                    @endif
-
-                    {{ $modal }}
-    
-                    <div class="bg-gray-50 rounded-b-lg flex justify-end space-x-2">
-                        <button type="button" id="cancel_add_{{ $id }}"
-                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                            Cancel
-                        </button>
-                        <button type="submit" id="save_new_{{ $id }}"
-                            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                            Simpan
-                        </button>
+            <div class="p-2 rounded-xl bg-gray-300/50 w-full max-w-md">
+                <div class="bg-white py-4 px-6 rounded-lg shadow-md">
+                    <div class="pb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Tambah {{ $name }}</h3>
                     </div>
-                </form>
+                    
+                    <form id="add_{{ $id }}_form" action="{{ route($formActionName) }}" method="POST">
+                        @if ($formActionMethod === 'POST')
+                            @csrf
+                        @else
+                            @method($formActionMethod)
+                            @csrf
+                        @endif
+
+                        {{ $modal }}
+        
+                        <div class="bg-gray-50 rounded-b-lg flex justify-end space-x-2">
+                            <button type="button" id="cancel_add_{{ $id }}"
+                                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                Cancel
+                            </button>
+                            <button type="submit" id="save_new_{{ $id }}"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                Simpan
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

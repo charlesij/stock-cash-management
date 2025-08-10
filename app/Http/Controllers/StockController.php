@@ -4,20 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use App\Models\Satuan;
+use App\Models\SaldoKas;
 use App\Models\Supplier;
 use App\Models\ProdukDetail;
+use App\Models\TransaksiKas;
 use Illuminate\Http\Request;
+use App\Models\TransaksiHutang;
+use App\Models\HistoryTransaksi;
 use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
-    public function stockView()
+    public function stockView(Request $request)
     {
         $breadcrumb = [
             ['name' => 'Stock', 'url' => route('stock.index')],
         ];
+        
+        $stock = Produk::with('produkDetail')->orderByDesc('updated_at')->paginate(20);
+
+        $productDetailExist = false;
+        if ($request->get('detail_produk_id')) {
+            $produkDetailView = Produk::with('produkDetail')->where('id', $request->get('detail_produk_id'))->first();
+            $productDetailExist = true;
+        }
+
         return view('dashboard.stock.index', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'stock' => $stock,
+            'productDetailExist' => $productDetailExist,
+            'produkDetailView' => $produkDetailView ?? null,
         ]);
     }
 
@@ -27,8 +43,10 @@ class StockController extends Controller
             ['name' => 'Stock', 'url' => route('stock.index')],
             ['name' => 'Create', 'url' => route('stock.create')],
         ];
-        $satuan = Satuan::get();
-        $supplier = Supplier::get();
+
+        $satuan = Satuan::orderBy('nama')->get();
+        $supplier = Supplier::orderBy('nama')->get();
+        
         return view('dashboard.stock.create', [
             'breadcrumb' => $breadcrumb,
             'satuan' => $satuan,
@@ -65,6 +83,64 @@ class StockController extends Controller
                 'tanggal_jatuh_tempo' => $validatedData['item_jatuh_tempo'],
                 'keterangan' => $validatedData['item_keterangan'],
             ]);
+
+            $saldoKas = SaldoKas::where('date', now()->format('Y-m-01'))->first();
+
+            if ($validatedData['item_metode_pembayaran'] == 'cash') {
+                $saldoKas->cash = $saldoKas->cash - $validatedData['item_harga_beli'];
+                $saldoKas->save();
+
+                $newTransaksiKas = [
+                    'saldo_kas_id' => $saldoKas->id,
+                    'jenis_transaksi' => 'pengeluaran',
+                    'keterangan' => $validatedData['item_keterangan'],
+                    'cash_in' => 0,
+                    'cash_out' => $validatedData['item_harga_beli'],
+                    'current_saldo' => $saldoKas->cash,
+                ];
+
+                $historyLog = [
+                    'jenis_transaksi' => 'pengeluaran',
+                    'keterangan' => $validatedData['item_keterangan'],
+                    'cash_in' => 0,
+                    'cash_out' => $validatedData['item_harga_beli'],
+                    'hutang_in' => 0,
+                    'hutang_out' => 0,
+                ];
+
+                TransaksiKas::create($newTransaksiKas);
+                HistoryTransaksi::storeTransactionHistory($historyLog);
+            } else {
+                $saldoKas->hutang = $saldoKas->hutang + $validatedData['item_harga_beli'];
+                $saldoKas->save();
+
+                $newTransaksiHutang = [
+                    'saldo_kas_id' => $saldoKas->id,
+                    'jenis_transaksi' => 'transaksi hutang',
+                    'supplier' => $validatedData['item_supplier'],
+                    'keterangan' => $validatedData['item_keterangan'],
+                    'jatuh_tempo' => $validatedData['item_jatuh_tempo'],
+                    'hutang_in' => $validatedData['item_harga_beli'],
+                    'hutang_out' => 0,
+                    'total_hutang' => $saldoKas->hutang,
+                ];
+
+                $historyLog = [
+                    'jenis_transaksi' => 'transaksi hutang',
+                    'keterangan' => $validatedData['item_keterangan'],
+                    'cash_in' => 0,
+                    'cash_out' => 0,
+                    'hutang_in' => $validatedData['item_harga_beli'],
+                    'hutang_out' => 0,
+                ];
+
+                Supplier::where('nama', $validatedData['item_supplier'])->update([
+                    'hutang' => $saldoKas->hutang,
+                ]);
+
+                TransaksiHutang::create($newTransaksiHutang);
+                HistoryTransaksi::storeTransactionHistory($historyLog);
+            }
 
             for ($i = 0; $i < count($validatedData['item_unit_satuan']); $i++) {
                 $log[] = [

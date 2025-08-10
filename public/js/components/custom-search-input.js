@@ -35,7 +35,6 @@ class CustomSearchInput {
 
     initEventListeners() {
         
-        // Search Input Events
         if (this.searchInput) {
             this.searchInput.addEventListener('focus', () => {
                 this.showDropdown();
@@ -178,17 +177,9 @@ class CustomSearchInput {
         }
     }
 
-    // handleSave() {
-    //     const newNameInput = document.getElementById(`new_${this.id}_name`);
-    //     if (newNameInput && newNameInput.value.trim()) {
-    //         // Implement save logic here
-    //         this.hideModal();
-    //         newNameInput.value = '';
-    //     }
-    // }
-
     handleModalClick(e) {
-        if (e.target === this.modal) {
+        
+        if (e.target === this.modal.children[0]) {
             this.hideModal();
         }
     }

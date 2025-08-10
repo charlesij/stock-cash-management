@@ -25,18 +25,38 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
-                            <td class="px-6 py-4 text-gray-500">Transaksi Hutang</td>
-                            <td class="px-6 py-4 text-gray-500">Gaji Karyawan</td>
-                            <td class="px-6 py-4 text-gray-500">2.500.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
-                            <td class="px-6 py-4 text-gray-500">Pengeluaran</td>
-                            <td class="px-6 py-4 text-gray-500">Pembayaran Hutang</td>
-                            <td class="px-6 py-4 text-gray-500">10.000.000</td>
-                        </tr>
+                        @if($todayTransaction->count() > 0)
+                            @foreach($todayTransaction as $index => $item)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->created_at->format('Y-m-d') }}</td>
+                                    <td class="px-6 py-4 text-gray-500 capitalize">{{ $item->jenis_transaksi }}</td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->keterangan }}</td>
+                                    <td class="px-6 py-4 {{ ($item->cash_in != 0 || $item->cash_out != 0) ? ($item->cash_in != 0 ? 'text-green-500' : 'text-red-500') : ($item->hutang_in != 0 ? 'text-red-500' : 'text-green-500') }}">
+                                        @if($item->cash_in != 0 || $item->cash_out != 0)
+                                            {{ $item->cash_in != 0 ? number_format($item->cash_in, 0, ',', '.') : number_format($item->cash_out, 0, ',', '.') }}
+                                        @else
+                                            {{ $item->hutang_in != 0 ? number_format($item->hutang_in, 0, ',', '.') : number_format($item->hutang_out, 0, ',', '.') }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                                {{-- <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
+                                    <td class="px-6 py-4 text-gray-500">Transaksi Hutang</td>
+                                    <td class="px-6 py-4 text-gray-500">Gaji Karyawan</td>
+                                    <td class="px-6 py-4 text-gray-500">2.500.000</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
+                                    <td class="px-6 py-4 text-gray-500">Pengeluaran</td>
+                                    <td class="px-6 py-4 text-gray-500">Pembayaran Hutang</td>
+                                    <td class="px-6 py-4 text-gray-500">10.000.000</td>
+                                </tr> --}}
+                        @else
+                            <tr class="hover:bg-gray-50">
+                                <td colspan="4" class="px-6 py-4 text-gray-500 text-center">Tidak ada data</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

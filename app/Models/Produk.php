@@ -25,4 +25,9 @@ class Produk extends Model
     {
         return $this->belongsTo(Satuan::class, 'satuan_id', 'id');
     }
+
+    public function produkDetail()
+    {
+        return $this->hasMany(ProdukDetail::class, 'produk_id', 'id');
+    }
 }

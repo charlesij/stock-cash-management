@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="mb-2">
         <h1 class="text-2xl font-semibold text-gray-900">Riwayat Transaksi</h1>
@@ -31,7 +30,14 @@
                                     <td class="px-6 py-4 text-gray-500">{{ $item->created_at }}</td>
                                     <td class="px-6 py-4 text-gray-500 capitalize">{{ $item->jenis_transaksi }}</td>
                                     <td class="px-6 py-4 text-gray-500">{{ $item->keterangan }}</td>
-                                    <td class="px-6 py-4 text-gray-500">{{ $item->cash_in !== 0 ? number_format($item->cash_in, 0, ',', '.') : number_format($item->cash_out, 0, ',', '.') }}</td>  
+                                    <td class="px-6 py-4 {{ ($item->cash_in != 0 || $item->cash_out != 0) ? ($item->cash_in != 0 ? 'text-green-500' : 'text-red-500') : ($item->hutang_in != 0 ? 'text-red-500' : 'text-green-500') }}">
+                                        @if($item->cash_in != 0 || $item->cash_out != 0)
+                                            {{ $item->cash_in != 0 ? number_format($item->cash_in, 0, ',', '.') : number_format($item->cash_out, 0, ',', '.') }}
+                                        @else
+                                            {{ $item->hutang_in != 0 ? number_format($item->hutang_in, 0, ',', '.') : number_format($item->hutang_out, 0, ',', '.') }}
+                                        @endif
+                                    </td>
+                                    {{-- <td class="px-6 py-4 text-gray-500">{{ $item->cash_in !== 0 ? number_format($item->cash_in, 0, ',', '.') : number_format($item->cash_out, 0, ',', '.') }}</td>   --}}
                                     <td class="px-6 py-4 text-gray-500">{{ number_format($item->saldo_kas, 0, ',', '.') }}</td>  
                                     <td class="px-6 py-4 text-gray-500">{{ number_format($item->hutang_in, 0, ',', '.') }}</td>  
                                 </tr>

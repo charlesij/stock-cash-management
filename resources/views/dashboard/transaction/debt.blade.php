@@ -59,7 +59,24 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr class="hover:bg-gray-50">
+                            @if ($debt->count() > 0)
+                                @foreach ($debt as $index => $item)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-gray-500">{{ $item->created_at->format('Y-m-d') }}</td>
+                                        <td class="px-6 py-4 text-gray-500">{{ $item->jatuh_tempo }}</td>
+                                        <td class="px-6 py-4 text-gray-500 capitalize">{{ $item->jenis_transaksi }}</td>
+                                        <td class="px-6 py-4 text-gray-500">{{ $item->keterangan }}</td>
+                                        <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">{{ $item->supplier }}</td>
+                                        <td class="px-6 py-4 {{ $item->hutang_in != 0 ? 'text-red-500' : 'text-red-500' }}">{{ $item->hutang_in != 0 ? number_format($item->hutang_in, 0, ',', '.') : number_format($item->hutang_out, 0, ',', '.') }}</td>  
+                                        <td class="px-6 py-4 text-gray-500">{{ number_format($item->total_hutang, 0, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="7" class="px-6 py-4 text-gray-500 text-center">Tidak ada transaksi hutang</td>
+                                </tr>
+                            @endif
+                            {{-- <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
                                 <td class="px-6 py-4 text-gray-500">8 Agustus 2025</td>
                                 <td class="px-6 py-4 text-gray-500">Transaksi Hutang</td>
@@ -85,7 +102,7 @@
                                 <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">PT Global Pasifik Prima</td>
                                 <td class="px-6 py-4 text-gray-500">10.000.000</td>
                                 <td class="px-6 py-4 text-gray-500">10.000.000</td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

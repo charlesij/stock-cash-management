@@ -148,9 +148,15 @@
                 
                 <!-- Array inputs -->
                 <div id="array_inputs">
+                    <!-- Unit Master -->
                     <input type="hidden" name="item_kuantitas[]" value="">
                     <input type="hidden" name="item_unit_satuan[]" value="">
                     <input type="hidden" name="item_harga_jual[]" value="">
+                    
+                    <!-- Unit [1] -->
+                    {{-- <input type="hidden" name="item_kuantitas[]" value="">
+                    <input type="hidden" name="item_unit_satuan[]" value="">
+                    <input type="hidden" name="item_harga_jual[]" value=""> --}}
                 </div>
 
                 <div class="flex justify-end">
@@ -229,24 +235,38 @@ $(document).ready(function() {
         $('input[name="item_metode_pembayaran"]').val(metode);
     });
     
+    // Handler untuk Unit Master
     $('.satuan_master-option').on('click', function() {
         const satuan = $(this).data('value');
         $('#satuan_master').attr('data-selected-id', satuan);
-        // Set value untuk input array satuan
-        $('input[name="item_unit_satuan[]"]').last().val(satuan);
+        $('input[name="item_unit_satuan[]"]').eq(0).val(satuan);
     });
 
     $('#kuantitas').on('input', function() {
-        const value = $(this).val();
-        // Set value untuk input array kuantitas
-        $('input[name="item_kuantitas[]"]').last().val(value);
+        $('input[name="item_kuantitas[]"]').eq(0).val($(this).val());
     });
 
     $('#harga_jual').on('input', function() {
         const value = $(this).val();
         const cleanValue = value.replace(/\./g, '');
-        // Set value untuk input array harga jual
-        $('input[name="item_harga_jual[]"]').last().val(cleanValue);
+        $('input[name="item_harga_jual[]"]').eq(0).val(cleanValue);
+    });
+
+    // Handler untuk Unit tambahan
+    $('.satuan_1-option').on('click', function() {
+        const satuan = $(this).data('value');
+        $('#satuan_1').attr('data-selected-id', satuan);
+        $('input[name="item_unit_satuan[]"]').eq(1).val(satuan);
+    });
+
+    $('#kuantitas_1').on('input', function() {
+        $('input[name="item_kuantitas[]"]').eq(1).val($(this).val());
+    });
+
+    $('#harga_jual_1').on('input', function() {
+        const value = $(this).val();
+        const cleanValue = value.replace(/\./g, '');
+        $('input[name="item_harga_jual[]"]').eq(1).val(cleanValue);
     });
 
     $('#keterangan').on('input', function() {

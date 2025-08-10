@@ -1,4 +1,4 @@
-<div id="add_new_template" class="col-span-3 grid grid-cols-3 gap-4">
+<div id="add_new_template" class="col-span-3 grid grid-cols-3 gap-4 ">
     <div class="mb-4">
         <label for="satuan_1_search" class="block text-gray-700 font-semibold-mb-2">Satuan 1</label>
         <div class="relative">

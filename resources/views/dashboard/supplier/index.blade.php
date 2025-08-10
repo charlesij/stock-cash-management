@@ -47,7 +47,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-gray-500">{{ $item->nama }}</td>
                                 <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate">{{ $item->alamat }}</td>
-                                <td class="px-6 py-4 text-gray-500">{{ $item->hutang == 0 ? '-' : $item->hutang }}</td>
+                                <td class="px-6 py-4 text-gray-500">{{ $item->hutang == 0 ? '-' : 'Rp. ' . number_format($item->hutang, 0, ',', '.') }}</td>
                                 <td class="px-6 py-4 text-gray-500">{{ $item->no_telp }}</td>
                             </tr>
                         @endforeach

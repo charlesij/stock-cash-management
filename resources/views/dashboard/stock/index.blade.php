@@ -36,45 +36,93 @@
                             <th class="px-4 py-3 text-left">
                                 <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 shadow-sm h-5 w-5 transition duration-150 ease-in-out cursor-pointer">
                             </th>
-                            <th class="px-6 py-3 text-left">Item</th>
-                            <th class="px-6 py-3 text-left">Qty</th>
-                            <th class="px-6 py-3 text-left">Units</th>
-                            <th class="px-6 py-3 text-left">Price/unit</th>
-                            <th class="px-6 py-3 text-left">Information</th>
-                            {{-- <th class="px-6 py-3">
-                                <div class="flex items-center justify-end space-x-2 relative">
-                                    <button class="table-action-button hover:bg-gray-600 rounded-full p-1 w-8 h-8 cursor-pointer">
-                                        <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
-                                    </button>
-                                    <x-table-action.overlay />
-                                </div>
-                            </th> --}}
+                            <th class="px-6 py-3 text-left">Tanggal Masuk</th>
+                            <th class="px-6 py-3 text-left">Nama Item</th>
+                            <th class="px-6 py-3 text-left">QTY</th>
+                            <th class="px-6 py-3 text-left">Unit</th>
+                            <th class="px-6 py-3 text-left">Detail Harga</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-4 text-gray-500">
-                                <input type="checkbox" value="" class="rounded border-gray-300 text-blue-600 shadow-sm h-5 w-5 transition duration-150 ease-in-out cursor-pointer checkbox-target">
-                            </td>
-                            <td class="px-6 py-4 text-gray-500">Kayu Jati</td>
-                            <td class="px-6 py-4 text-gray-500">100</td>
-                            <td class="px-6 py-4 text-gray-500">Meter</td>
-                            <td class="px-6 py-4 text-gray-500">Rp. 100.000</td>
-                            <td class="px-6 py-4 text-gray-500 max-w-[200px] truncate" colspan="2" title="Keterangan kalau kayu ini adalah kayu jati yang berasal dari supplier PT. Jati Jaya.">
-                                Keterangan kalau kayu ini adalah kayu jati yang berasal dari supplier PT. Jati Jaya.
-                            </td>
-                        </tr>
-                        {{-- <tr>
+                        
+                        @if ($stock->count() > 0)
+                            @foreach($stock as $index => $item)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-4 text-gray-500">
+                                        <input type="checkbox" value="" class="rounded border-gray-300 text-blue-600 shadow-sm h-5 w-5 transition duration-150 ease-in-out cursor-pointer checkbox-target">
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->tanggal_barang_masuk }}</td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->nama }}</td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->produkDetail[0]->kuantitas }}</td>
+                                    <td class="px-6 py-4 text-gray-500">{{ $item->produkDetail[0]->nama_satuan }}</td>
+                                    <td class="px-6 py-4 text-gray-500">
+                                        <a href="?detail_produk_id={{ $item->id }}&view_edit=true" class="text-blue-500 font-semibold hover:text-blue-700">
+                                            Detail Produk
+                                            <span> ({{ $item->produkDetail->count() }} {{ $item->produkDetail->count() > 1 ? 'Items' : 'Item' }})</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                        <tr>
                             <td colspan="6" class="px-6 py-4 text-gray-500 text-center">
                                 Tidak ada data
                             </td>
-                        </tr> --}}
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+@if (request()->get('detail_produk_id') && request()->get('view_edit') == 'true')
+    <div id="detail-produk-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50">
+        <div class="fixed inset-0 flex items-center justify-center">
+            <div class="p-2 rounded-xl bg-gray-300/50 w-full max-w-2xl">
+                <div class="bg-gray-100 rounded-xl p-4 shadow-md">
+                    <h2 class="text-lg font-semibold text-gray-900 title-table text-center">Detail Satuan Produk</h2>
+                    <div class="mt-4">
+                        <div class="overflow-x-auto shadow-md border-gray-50 relative rounded-md">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-gray-700 text-gray-100 uppercase text-xs ">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left">Kuantitas</th>
+                                        <th class="px-6 py-3 text-left">Satuan</th>
+                                        <th class="px-6 py-3 text-left">Harga Satuan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    @if ($productDetailExist)
+                                        @foreach ($produkDetailView->produkDetail as $item)
+                                            <tr>
+                                                <td class="px-6 py-4 text-gray-500">{{ $item->kuantitas }}</td>
+                                                <td class="px-6 py-4 text-gray-500">{{ $item->nama_satuan }}</td>
+                                                <td class="px-6 py-4 text-gray-500">Rp. {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-4 text-gray-500 text-center">
+                                            Tidak ada data
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button id="close-detail-produk-modal" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition cursor-pointer">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 
 <script>
     $(document).ready(function() {
@@ -104,22 +152,17 @@
             }
         });
 
-        // Handle edit form submission
         $('#edit-form').on('submit', function(e) {
             e.preventDefault();
             
-            // Get all selected supplier IDs
             var selectedIds = [];
             $('.checkbox-target:checked').each(function() {
                 selectedIds.push($(this).val());
             });
 
-            // Add the selected IDs to the form
             if (selectedIds.length > 0) {
-                // Remove any existing hidden inputs
                 $(this).find('input[name="ids[]"]').remove();
                 
-                // Add new hidden inputs for each selected ID
                 selectedIds.forEach(function(id) {
                     $('<input>').attr({
                         type: 'hidden',
@@ -128,12 +171,10 @@
                     }).appendTo('#edit-form');
                 });
 
-                // Submit the form
                 this.submit();
             }
         });
 
-        // Handle delete form submission
         $('#delete-form').on('submit', function(e) {
             e.preventDefault();
             
@@ -141,18 +182,14 @@
                 return false;
             }
 
-            // Get all selected supplier IDs
             var selectedIds = [];
             $('.checkbox-target:checked').each(function() {
                 selectedIds.push($(this).val());
             });
 
-            // Add the selected IDs to the form
             if (selectedIds.length > 0) {
-                // Remove any existing hidden inputs
                 $(this).find('input[name="ids[]"]').remove();
                 
-                // Add new hidden inputs for each selected ID
                 selectedIds.forEach(function(id) {
                     $('<input>').attr({
                         type: 'hidden',
@@ -161,9 +198,18 @@
                     }).appendTo('#delete-form');
                 });
 
-                // Submit the form
                 this.submit();
             }
+        });
+
+        $('#detail-produk-modal').click(function(e) {
+            if (e.target === this.children[0]) {
+                $(this).hide();
+            }
+        });
+
+        $('#close-detail-produk-modal').click(() => {
+            $('#detail-produk-modal').hide();
         });
 
     });

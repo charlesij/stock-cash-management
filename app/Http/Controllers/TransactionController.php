@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SaldoKas;
 use App\Models\TransaksiKas;
 use Illuminate\Http\Request;
+use App\Models\TransaksiHutang;
 use App\Models\HistoryTransaksi;
 use Illuminate\Support\Facades\Log;
 
@@ -15,8 +16,11 @@ class TransactionController extends Controller
         $breadcrumb = [
             ['name' => 'Transaction', 'url' => route('transaction.index')],
         ];
+
+        $todayTransaction = HistoryTransaksi::where('created_at', 'like', date('Y-m-d') . '%')->orderByDesc('created_at')->get();
         return view('dashboard.transaction.index', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'todayTransaction' => $todayTransaction,
         ]);
     }
     public function cashflowView()
@@ -99,10 +103,11 @@ class TransactionController extends Controller
             ['name' => 'Transaction', 'url' => route('transaction.debt')],
         ];
 
-        $monthYear = date('Y-m-01');
+        $debt = TransaksiHutang::orderByDesc('updated_at')->paginate(20);
 
         return view('dashboard.transaction.debt', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'debt' => $debt,
         ]);
     }
     public function incomeView()

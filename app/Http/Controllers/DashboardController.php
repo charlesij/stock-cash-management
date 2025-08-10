@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\SaldoKas;
 use Illuminate\Http\Request;
+use App\Models\TransaksiHutang;
 
 class DashboardController extends Controller
 {
@@ -26,12 +27,21 @@ class DashboardController extends Controller
             $currentCash = 0;
             $cashTrend = 'no data';
             $lastCashUpdate = 'no data';
+            $outstandingDebt = 0;
+            $debtDueSoon = 0;
+            $debtTrend = 0;
         } else {
             $currentCash = floatval($saldoKas->cash);
             $cashTrend = 0;
             // $cashTrend = (($currentCash - $saldoKasLastMonth->cash) / $saldoKasLastMonth->cash) * 100;
             $lastCashUpdate = Carbon::parse($saldoKas->updated_at)->format('d M Y H:i');
+            
+            $outstandingDebt = TransaksiHutang::debtDueSoon()['total_debt'];
+            $debtDueSoon = TransaksiHutang::debtDueSoon()['earliest_due_debt'];
+            // $debtTrend = (($outstandingDebt - $debtDueSoon) / $debtDueSoon) * 100 ?? 0;
         }
+
+        // dd($outstandingDebt, $debtDueSoon);
 
         $data = [
             'title' => 'Dashboard',
@@ -40,9 +50,13 @@ class DashboardController extends Controller
             'lastCashUpdate' => $lastCashUpdate,
             'cashTrend' => $cashTrend,
 
-            'outstandingDebt' => 50000000,
-            'debtDueSoon' => 20000000,
-            'debtTrend' => -5,
+            // 'outstandingDebt' => $outstandingDebt,
+            // 'debtDueSoon' => $debtDueSoon,
+            // 'debtTrend' => $debtTrend,
+
+            'outstandingDebt' => floatval($outstandingDebt),
+            'debtDueSoon' => floatval($debtDueSoon),
+            'debtTrend' => 0,
             
             'totalStockItems' => 156, // Total items in inventory
             'lowStockItems' => 8, // Items with low stock
