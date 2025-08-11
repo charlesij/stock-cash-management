@@ -3,480 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashier</title>
+    <title>Modern Cashier - POS System</title>
     @vite('resources/css/app.css')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <style>
-        .product-card {
-            transition: all 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .search-highlight {
-            background: rgba(59, 130, 246, 0.1);
-            border: 2px solid #3b82f6;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
-    </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-100">
-    <!-- Top Navigation -->
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl font-semibold text-gray-800">Stock Cash Management</span>
-                </div>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
+        <div class="max-w-full px-6 py-4">
+            <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <span class="text-gray-600">Cashier: {{ auth()->user()->name }}</span>
-                    <form action="{{ route('logout') }}" method="POST" class="ml-4">
-                        @csrf
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                            </svg>
-                            Logout
-                        </button>
-                    </form>
+                    <div class="bg-black/10 backdrop-blur-lg text-white p-3 rounded-xl shadow-inner">
+                        <i class="fas fa-cash-register text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">StockCash Cashier</h1>
+                        <p class="text-sm text-blue-100">Cashier Terminal</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div id="clock" class="text-white text-lg font-medium bg-black/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                        <i class="far fa-clock mr-2"></i>
+                        <span>00:00:00</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-blue-100 capitalize">Cashier: <span class="text-indigo-200 font-bold text-lg">{{ auth()->user()->name ?? 'John Doe' }}</span></p>
+                        <p class="text-sm text-blue-100">Terminal #{{ auth()->user()->id ?? '001' }}</p>
+                    </div>
+                    <div class="relative group">
+                        <div class="w-11 h-11 bg-white bg-opacity-20 hover:bg-opacity-30 transition-all duration-300 rounded-full flex items-center justify-center cursor-pointer shadow-inner">
+                            <i class="fas fa-user text-white text-lg"></i>
+                        </div>
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block transition-all duration-300 z-50">
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50 hover:text-blue-600">
+                                <i class="fas fa-user-circle mr-2"></i>Profile
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50 hover:text-blue-600">
+                                <i class="fas fa-cog mr-2"></i>Settings
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
+
+    <!-- Add Clock Script -->
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.querySelector('#clock span').textContent = time;
+        }
+        
+        // Update clock immediately and then every second
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Products Section -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex h-screen">
+        <!-- Left Panel - Products -->
+        <div class="flex-1 p-6 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 h-full flex flex-col">
+                <!-- Search Section -->
+                <div class="p-6 border-b border-gray-200">
                     <div class="mb-6">
-                        <input 
-                            type="text" 
-                            id="searchInput"
-                            placeholder="Search products..."
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold text-gray-900">Products</h2>
+                            {{-- <div class="flex items-center space-x-2">
+                                <button class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition-all">
+                                    <i class="fas fa-th-large text-lg"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition-all">
+                                    <i class="fas fa-list text-lg"></i>
+                                </button>
+                            </div> --}}
+                        </div>
+                        <div class="flex space-x-3">
+                            <!-- Search Bar -->
+                            <div class="flex-1 relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i>
+                                </div>
+                                <input id="search-produk-input" type="text" placeholder="Search products or scan barcode..." class="w-full pl-11 pr-16 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 text-gray-600 placeholder-gray-400 outline-none">
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <kbd class="hidden sm:inline-block px-2 py-1 text-xs text-gray-400 bg-gray-100 rounded">⌘K</kbd>
+                                </div>
+                            </div>
+                            {{-- <!-- Barcode Scanner Button -->
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl
+                                         transition-all duration-300 flex items-center space-x-2 shadow-lg shadow-blue-600/20
+                                         hover:shadow-blue-600/30 focus:ring-4 focus:ring-blue-500/20">
+                                <i class="fas fa-barcode text-lg"></i>
+                                <span class="hidden sm:inline font-medium">Scanner</span>
+                            </button> --}}
+                        </div>
                     </div>
                     
-                    <!-- Product Grid -->
-                    <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    </div>
+                    <!-- Category Filters -->
+                    {{-- <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <select class="appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-2.5 pr-10
+                                         focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300
+                                         text-gray-600 font-medium cursor-pointer">
+                                <option>All Categories</option>
+                                <option>Electronics</option>
+                                <option>Groceries</option>
+                                <option>Clothing</option>
+                                <option>Books</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 flex space-x-2 overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+                            <button class="bg-blue-600 text-white px-4 py-2.5 rounded-xl font-medium shadow-sm hover:shadow-md transition-all duration-300">
+                                All Items
+                            </button>
+                            <button class="bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2.5 rounded-xl font-medium transition-all duration-300
+                                         border-2 border-gray-200 hover:border-gray-300">
+                                Best Sellers
+                            </button>
+                            <button class="bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2.5 rounded-xl font-medium transition-all duration-300
+                                         border-2 border-gray-200 hover:border-gray-300">
+                                New Arrivals
+                            </button>
+                            <button class="bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2.5 rounded-xl font-medium transition-all duration-300
+                                         border-2 border-gray-200 hover:border-gray-300">
+                                On Sale
+                            </button>
+                        </div>
+                    </div> --}}
+                </div>
 
-                    <!-- Pagination -->
-                    <div class="mt-6 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <button id="prevPage" class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50">
-                                Previous
-                            </button>
-                            <span class="text-gray-600">
-                                Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
-                            </span>
-                            <button id="nextPage" class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50">
-                                Next
-                            </button>
-                        </div>
-                        <div class="text-gray-600">
-                            Showing <span id="showingStart">1</span> -
-                            <span id="showingEnd">9</span>
-                            of <span id="totalItems">0</span> items
-                        </div>
+                <!-- Products Grid -->
+                <div class="flex-1 p-6 overflow-y-auto">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+                        {{-- @dd($produk) --}}
+                        @foreach($produk as $p)
+                            <x-cashier.produk-card 
+                                :produk="$p" 
+                                :isNew="false" 
+                                imageUrl="https://placehold.co/200x200/e2e8f0/64748b?text={{ $p->nama }}" 
+                                :stock="$p->produkDetail[0]->kuantitas" 
+                                :namaProduk="$p->nama" 
+                                :hargaProduk="$p->produkDetail[0]->harga_jual" 
+                            />
+                        @endforeach
+                        
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Cart Section -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow p-6 sticky top-8">
-                    <h2 class="text-xl font-semibold mb-4">Shopping Cart</h2>
-                    
-                    <!-- Cart Items -->
-                    <div id="cartItems" class="space-y-4 mb-6 max-h-[400px] overflow-y-auto">
-                    </div>
-
-                    <!-- Cart Summary -->
-                    <div class="border-t pt-4">
-                        <div class="flex justify-between mb-2">
-                            <span class="font-medium">Subtotal:</span>
-                            <span id="cartTotal" class="font-bold">Rp 0</span>
+        <!-- Right Panel - Cart -->
+        <div class="w-96 p-6 bg-white border-l border-gray-200">
+            <div class="h-full flex flex-col">
+                <!-- Cart Header -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Checkout Items</h2>
+                            <p class="text-sm text-gray-500">0 items in cart</p>
                         </div>
-                        <button 
-                            id="checkoutBtn"
-                            class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            disabled
-                        >
-                            Proceed to Payment
+                        <button class="text-red-500 hover:text-red-600 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 transition-all duration-300 cursor-pointer">
+                            <i class="fas fa-trash mr-1.5"></i>Hapus Semua
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-lg max-w-md w-full p-6 mx-auto mt-20">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">Payment Details</h3>
-                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Total Amount</label>
-                    <div id="modalTotal" class="text-2xl font-bold text-blue-600">Rp 0</div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Payment Method</label>
-                    <select id="paymentMethod" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="cash">Cash</option>
-                        <option value="debit">Debit Card</option>
-                        <option value="credit">Credit Card</option>
-                    </select>
-                </div>
-
-                <div id="cashPayment">
-                    <label class="block text-sm font-medium text-gray-700">Amount Received</label>
-                    <input type="number" id="amountReceived" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    
-                    <div class="mt-2">
-                        <label class="block text-sm font-medium text-gray-700">Change</label>
-                        <div id="changeAmount" class="text-xl font-bold">Rp 0</div>
-                    </div>
-                </div>
-
-                <button id="completePayment" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                    Complete Payment
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const products = [
-            {
-                id: 1,
-                name: 'Coffee Latte',
-                price: 25000,
-                stock: 100,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 2,
-                name: 'Cappuccino',
-                price: 28000,
-                stock: 100,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 3,
-                name: 'Espresso',
-                price: 20000,
-                stock: 100,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 4,
-                name: 'Green Tea Latte',
-                price: 23000,
-                stock: 50,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 5,
-                name: 'Chocolate Frappe',
-                price: 30000,
-                stock: 75,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 6,
-                name: 'Caramel Macchiato',
-                price: 32000,
-                stock: 80,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 7,
-                name: 'Vanilla Latte',
-                price: 27000,
-                stock: 90,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 8,
-                name: 'Mocha',
-                price: 29000,
-                stock: 85,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 9,
-                name: 'Americano',
-                price: 22000,
-                stock: 100,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 10,
-                name: 'Croissant',
-                price: 15000,
-                stock: 50,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 11,
-                name: 'Chocolate Muffin',
-                price: 12000,
-                stock: 40,
-                image: 'https://placehold.co/300'
-            },
-            {
-                id: 12,
-                name: 'Cheese Cake',
-                price: 35000,
-                stock: 30,
-                image: 'https://placehold.co/300'
-            }
-        ];
-
-        $(document).ready(function() {
-            let cart = [];
-            let currentPage = 1;
-            const itemsPerPage = 9;
-            let filteredProducts = [...products];
-
-            function formatPrice(price) {
-                return 'Rp ' + price.toLocaleString('id-ID');
-            }
-
-            function renderProducts() {
-                const start = (currentPage - 1) * itemsPerPage;
-                const end = start + itemsPerPage;
-                const paginatedProducts = filteredProducts.slice(start, end);
-
-                $('#productGrid').empty();
-                paginatedProducts.forEach(product => {
-                    $('#productGrid').append(`
-                        <div class="product-card bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow" data-id="${product.id}">
-                            <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-lg mb-4">
-                            <h3 class="product-name text-lg font-semibold">${product.name}</h3>
-                            <div class="product-details" style="display: none;">
-                                <p class="text-sm text-gray-600">Stock: ${product.stock}</p>
-                                <p class="text-lg font-bold text-blue-600">${formatPrice(product.price)}</p>
-                                <div class="mt-2 text-sm text-gray-500">Click to add this item to cart</div>
-                            </div>
-                            <button 
-                                class="add-to-cart-btn w-full mt-4 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}"
-                                ${product.stock === 0 ? 'disabled' : ''}
-                            >
-                                ${product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-                            </button>
-                        </div>
-                    `);
-                });
-
-                updatePagination();
-            }
-
-            function updatePagination() {
-                const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-                const start = (currentPage - 1) * itemsPerPage + 1;
-                const end = Math.min(currentPage * itemsPerPage, filteredProducts.length);
-
-                $('#currentPage').text(currentPage);
-                $('#totalPages').text(totalPages);
-                $('#showingStart').text(start);
-                $('#showingEnd').text(end);
-                $('#totalItems').text(filteredProducts.length);
-
-                $('#prevPage').prop('disabled', currentPage === 1);
-                $('#nextPage').prop('disabled', currentPage === totalPages);
-            }
-
-            function renderCart() {
-                $('#cartItems').empty();
-                let total = 0;
-
-                cart.forEach(item => {
-                    total += item.price * item.quantity;
-                    $('#cartItems').append(`
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <div>
-                                <h4 class="font-medium">${item.name}</h4>
-                                <p class="text-gray-600">${formatPrice(item.price)}</p>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <button class="cart-minus px-2 py-1 bg-gray-200 rounded" data-id="${item.id}">-</button>
-                                <span>${item.quantity}</span>
-                                <button class="cart-plus px-2 py-1 bg-gray-200 rounded" data-id="${item.id}">+</button>
-                                <button class="cart-remove text-red-500 ml-2" data-id="${item.id}">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
+                <!-- Cart Items -->
+                <div class="flex-1 overflow-y-auto mb-6 space-y-3 pr-2">
+                    <!-- Cart Item Template -->
+                    <template x-for="item in [
+                        { name: 'iPhone 14 Pro', price: 999.00, quantity: 1, image: 'https://placehold.co/60x60/e2e8f0/64748b?text=iPhone' },
+                        { name: 'Premium Coffee Beans', price: 24.99, quantity: 2, image: 'https://placehold.co/60x60/f0fdf4/16a34a?text=Coffee' },
+                        { name: 'Wireless Mouse', price: 39.99, quantity: 1, image: 'https://placehold.co/60x60/fefce8/ca8a04?text=Mouse' }
+                    ]">
+                        <div class="group bg-gray-50 hover:bg-white rounded-xl p-3 flex items-center space-x-3
+                                  transition-all duration-300 hover:shadow-md border border-gray-100">
+                            <div class="relative">
+                                <img :src="item.image" :alt="item.name" 
+                                     class="w-14 h-14 rounded-lg object-cover shadow-sm">
+                                <button class="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full 
+                                           flex items-center justify-center opacity-0 group-hover:opacity-100 
+                                           transition-opacity duration-300 hover:bg-red-600">
+                                    <i class="fas fa-times text-xs"></i>
                                 </button>
                             </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-900" x-text="item.name"></h4>
+                                <div class="flex items-center justify-between mt-1">
+                                    <p class="text-blue-600 font-bold">
+                                        $<span x-text="(item.price * item.quantity).toFixed(2)"></span>
+                                    </p>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="w-7 h-7 bg-white hover:bg-gray-100 rounded-lg flex items-center justify-center 
+                                                   transition-colors border border-gray-200 hover:border-gray-300">
+                                            <i class="fas fa-minus text-xs text-gray-600"></i>
+                                        </button>
+                                        <span class="w-8 text-center font-medium" x-text="item.quantity"></span>
+                                        <button class="w-7 h-7 bg-white hover:bg-gray-100 rounded-lg flex items-center justify-center 
+                                                   transition-colors border border-gray-200 hover:border-gray-300">
+                                            <i class="fas fa-plus text-xs text-gray-600"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    `);
-                });
+                    </template>
+                </div>
 
-                $('#cartTotal').text(formatPrice(total));
-                $('#modalTotal').text(formatPrice(total));
-                $('#checkoutBtn').prop('disabled', cart.length === 0);
+                <!-- Cart Summary -->
+                <div class="border-t border-gray-200 pt-4">
+                    <!-- Discount Code -->
+                    {{-- <div class="mb-4">
+                        <div class="flex space-x-2">
+                            <input type="text" placeholder="Discount code" 
+                                   class="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                            <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium
+                                         hover:bg-gray-200 transition-colors">
+                                Apply
+                            </button>
+                        </div>
+                    </div> --}}
+
+                    <!-- Summary Details -->
+                    <div class="space-y-3 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-medium">$1,088.97</span>
+                        </div>
+                        {{-- <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Tax (8.5%)</span>
+                            <span class="font-medium">$92.56</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-green-600">
+                            <span>Discount</span>
+                            <span class="font-medium">-$0.00</span>
+                        </div> --}}
+                        <div class="border-t border-gray-200 pt-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold">Total</span>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-blue-600">$1,088.97</span>
+                                    <p class="text-sm text-gray-500">Sudah termasuk PPN 11%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Buttons -->
+                    <div class="space-y-3">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl
+                                     font-semibold transition-all duration-300 shadow-lg shadow-green-600/20
+                                     hover:shadow-green-600/30 focus:ring-4 focus:ring-green-500/20">
+                            <i class="fas fa-credit-card mr-2"></i>Process Payment
+                        </button>
+                        <div class="flex space-x-2">
+                            <button title="Simpan transaksi untuk nanti" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 px-4 rounded-xl
+                                         text-sm font-medium transition-all duration-300 hover:shadow-sm cursor-pointer">
+                                <i class="fas fa-save mr-1.5"></i>Hold
+                            </button>
+                            <button title="Cetak invoice" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2.5 px-4 rounded-xl
+                                         text-sm font-medium transition-all duration-300 hover:shadow-sm cursor-pointer">
+                                <i class="fas fa-receipt mr-1.5"></i>Receipt
+                            </button>
+                            <button title="Bagikan invoice" class="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-600 py-2.5 px-4 rounded-xl
+                                         text-sm font-medium transition-all duration-300 hover:shadow-sm cursor-pointer">
+                                <i class="fas fa-share-alt mr-1.5"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                e.preventDefault();
+                document.getElementById('search-produk-input').focus();
             }
-
-            $('#searchInput').on('input', function() {
-                const query = $(this).val().toLowerCase();
-                filteredProducts = products.filter(product => 
-                    product.name.toLowerCase().includes(query)
-                );
-                currentPage = 1;
-                renderProducts();
-
-                if (query) {
-                    $('.product-card').each(function() {
-                        const name = $(this).find('.product-name').text().toLowerCase();
-                        if (name.includes(query)) {
-                            $(this).addClass('search-highlight');
-                        } else {
-                            $(this).removeClass('search-highlight');
-                        }
-                    });
-                } else {
-                    $('.product-card').removeClass('search-highlight');
-                }
-            });
-
-            $(document).on('click', '.add-to-cart-btn:not(:disabled)', function() {
-                const card = $(this).closest('.product-card');
-                const productId = parseInt(card.data('id'));
-                const product = products.find(p => p.id === productId);
-                
-                const existingItem = cart.find(item => item.id === productId);
-                if (existingItem) {
-                    existingItem.quantity++;
-                } else {
-                    cart.push({...product, quantity: 1});
-                }
-
-                const imgClone = card.find('img').clone()
-                    .offset({
-                        top: card.find('img').offset().top,
-                        left: card.find('img').offset().left
-                    })
-                    .css({
-                        'position': 'absolute',
-                        'height': '150px',
-                        'width': '150px',
-                        'z-index': '100'
-                    })
-                    .appendTo($('body'))
-                    .animate({
-                        'top': $('#cartItems').offset().top + 10,
-                        'left': $('#cartItems').offset().left + 10,
-                        'width': 75,
-                        'height': 75
-                    }, 1000, 'easeInOutExpo');
-
-                imgClone.animate({
-                    'width': 0,
-                    'height': 0
-                }, function() {
-                    $(this).detach();
-                });
-
-                renderCart();
-            });
-
-            $(document).on('click', '.cart-minus', function() {
-                const id = $(this).data('id');
-                const item = cart.find(item => item.id === id);
-                if (item.quantity > 1) {
-                    item.quantity--;
-                    renderCart();
-                }
-            });
-
-            $(document).on('click', '.cart-plus', function() {
-                const id = $(this).data('id');
-                const item = cart.find(item => item.id === id);
-                item.quantity++;
-                renderCart();
-            });
-
-            $(document).on('click', '.cart-remove', function() {
-                const id = $(this).data('id');
-                cart = cart.filter(item => item.id !== id);
-                renderCart();
-            });
-
-            $('#prevPage').click(function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderProducts();
-                }
-            });
-
-            $('#nextPage').click(function() {
-                const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderProducts();
-                }
-            });
-
-            $('#checkoutBtn').click(function() {
-                $('#paymentModal').removeClass('hidden').addClass('flex');
-            });
-
-            $('#closeModal').click(function() {
-                $('#paymentModal').removeClass('flex').addClass('hidden');
-            });
-
-            $('#paymentMethod').change(function() {
-                if ($(this).val() === 'cash') {
-                    $('#cashPayment').show();
-                } else {
-                    $('#cashPayment').hide();
-                }
-            });
-
-            $('#amountReceived').on('input', function() {
-                const received = parseFloat($(this).val()) || 0;
-                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const change = received - total;
-                $('#changeAmount').text(formatPrice(Math.max(0, change)));
-            });
-
-            $('#completePayment').click(function() {
-                alert('Payment completed!');
-                cart = [];
-                renderCart();
-                $('#paymentModal').removeClass('flex').addClass('hidden');
-            });
-
-            $('.product-card').hover(
-                function() {
-                    $(this).find('.product-details').slideDown(200);
-                },
-                function() {
-                    $(this).find('.product-details').slideUp(200);
-                }
-            );
-
-            renderProducts();
-            renderCart();
         });
     </script>
 </body>

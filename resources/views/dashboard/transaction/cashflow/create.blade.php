@@ -1,6 +1,6 @@
 @extends('dashboard.layout.main')
 @section('content')
-
+{{-- @dd($saldoKas) --}}
 <div class="flex-1 px-6 bg-gray-100 relative">
     <div class="mb-6">
         <h1 class="text-2xl font-semibold text-gray-900">Kelola Cash</h1>
@@ -54,20 +54,21 @@
         
                 <div class="mb-4">
                     <label for="current_cash" class="block text-gray-700 font-semibold mb-2">Saldo saat ini (Rp)</label>
-                    <input type="text" name="current_cash" id="current_cash" value="{{ $current_cash ?? 0 }}" placeholder="Saldo saat ini"
-                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 number-format"
-                        required>
+                    <input type="text" name="current_cash" id="current_cash" value="{{ empty($current_cash) ? 0 : number_format($current_cash->cash, 0, ',', '.') }}" placeholder="Saldo saat ini"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 number-format bg-gray-100 cursor-not-allowed"
+                        disabled
+                        >
                 </div>
         
                 <div class="mb-4">
-                    <label for="cash_in" class="block text-gray-700 font-semibold mb-2">Saldo saat ini (Rp)</label>
-                    <input type="text" name="cash_in" id="cash_in" value="{{ old('cash_in') }}" placeholder="Ubah Saldo Kas"
+                    <label for="cash_in" class="block text-gray-700 font-semibold mb-2">Ubah Saldo (Rp)</label>
+                    <input type="text" name="cash_in" id="cash_in" value="{{ old('cash_in') ?? 0 }}" placeholder="Ubah Saldo Kas"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 number-format"
                         required>
                 </div>
         
                 <div class="mb-6 col-span-2">
-                    <label for="keterangan" class="block text-gray-700 font-semibold mb-2">Keterangan Pengubahan Saldo</label>
+                    <label for="keterangan" class="block text-gray-700 font-semibold mb-2">Keterangan Pengubahan Saldo<span class="text-red-500">*</span></label>
                     <textarea name="keterangan" id="keterangan" cols="30" rows="3"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                     placeholder="Input Keterangan Pengubahan Saldo"

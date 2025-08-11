@@ -119,13 +119,14 @@
                     </div>
                 </div>
 
-                <div class="col-span-3 border-t border-dashed border-gray-300 rounded-md p-4">
+                {{-- Perbaiki nanti, buat cashier nya jalan dulu --}}
+                {{-- <div class="col-span-3 border-t border-dashed border-gray-300 rounded-md p-4">
                     <div id="total_preview" class="text-right text-gray-600 mb-2"></div>
                     <button type="button" id="add_unit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
                         <i class="fas fa-plus mr-2"></i>
                         Tambah Unit
                     </button>
-                </div>
+                </div> --}}
             </div>
             
             <div class="mb-4 col-span-2">
@@ -235,7 +236,6 @@ $(document).ready(function() {
         $('input[name="item_metode_pembayaran"]').val(metode);
     });
     
-    // Handler untuk Unit Master
     $('.satuan_master-option').on('click', function() {
         const satuan = $(this).data('value');
         $('#satuan_master').attr('data-selected-id', satuan);
@@ -252,7 +252,6 @@ $(document).ready(function() {
         $('input[name="item_harga_jual[]"]').eq(0).val(cleanValue);
     });
 
-    // Handler untuk Unit tambahan
     $('.satuan_1-option').on('click', function() {
         const satuan = $(this).data('value');
         $('#satuan_1').attr('data-selected-id', satuan);
@@ -294,6 +293,15 @@ $(document).ready(function() {
         $('input[name="item_jatuh_tempo"]').val($(this).val());
     });
 
+    const saldoCash = new Intl.NumberFormat('id-ID').format({{ $saldoKas->cash }});
+    $(document).on('click', '#cash_supplier', function() {
+        $('label[for="metode_pembayaran_search"]').html(`Metode Pembayaran <span class="text-gray-400">(Kas Tersedia: ${saldoCash})</span>`);
+    });
+
+    const saldoHutang = new Intl.NumberFormat('id-ID').format({{ $saldoKas->hutang }});
+    $(document).on('click', '#hutang_supplier', function() {
+        $('label[for="metode_pembayaran_search"]').html(`Metode Pembayaran <span class="text-gray-400">(Hutang Saat Ini: ${saldoHutang})</span>`);
+    });
 });
 </script>
 

@@ -45,7 +45,24 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50">
+                        @if ($stockHistory->count() > 0)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
+                                <td class="px-6 py-4 text-gray-500">Kayu Jati</td>
+                                <td class="px-6 py-4 text-gray-500">0</td>
+                                <td class="px-6 py-4 text-gray-500">10</td>
+                                <td class="px-6 py-4 text-gray-500">Meter</td>
+                                <td class="px-6 py-4 text-gray-500">Rp. 100.000</td>
+                                <td class="px-6 py-4 text-gray-500">90</td>
+                                <td class="px-6 py-4 text-gray-500">Rp. 1.000.000</td>
+                                <td class="px-6 py-4 text-gray-500">Penjualan Produk</td>
+                            </tr>
+                        @else
+                            <tr class="hover:bg-gray-50">
+                                <td colspan="9" class="px-6 py-4 text-gray-500 text-center">Tidak ada data</td>
+                            </tr>
+                        @endif
+                        {{-- <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 text-gray-500">6 Agustus 2025</td>
                             <td class="px-6 py-4 text-gray-500">Kayu Jati</td>
                             <td class="px-6 py-4 text-gray-500">0</td>
@@ -55,7 +72,7 @@
                             <td class="px-6 py-4 text-gray-500">90</td>
                             <td class="px-6 py-4 text-gray-500">Rp. 1.000.000</td>
                             <td class="px-6 py-4 text-gray-500">Penjualan Produk</td>
-                        </tr>
+                        </tr> --}}
                     </tbody>
                 </table>
             </div>
