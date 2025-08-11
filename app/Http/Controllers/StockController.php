@@ -46,11 +46,13 @@ class StockController extends Controller
 
         $satuan = Satuan::orderBy('nama')->get();
         $supplier = Supplier::orderBy('nama')->get();
+        $saldoKas = SaldoKas::where('date', now()->format('Y-m-01'))->first();
         
         return view('dashboard.stock.create', [
             'breadcrumb' => $breadcrumb,
             'satuan' => $satuan,
             'supplier' => $supplier,
+            'saldoKas' => $saldoKas,
         ]);
     }
 
@@ -206,8 +208,12 @@ class StockController extends Controller
         $breadcrumb = [
             ['name' => 'History', 'url' => route('stocks.history')],
         ];
+
+        $stockHistory = Produk::where('jenis_transaksi', 'penjualan')->paginate(20);
+
         return view('dashboard.stock.history', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'stockHistory' => $stockHistory,
         ]);
     }
 }

@@ -43,8 +43,11 @@ class TransactionController extends Controller
             ['name' => 'Kelola Kas', 'url' => route('transaction.cashflow.create')],
         ];
 
+        $saldoKas = SaldoKas::where('date', date('Y-m-01'))->first();
+
         return view('dashboard.transaction.cashflow.create', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'current_cash' => $saldoKas,
         ]);
     }
     public function cashflowStore(Request $request)

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Produk;
 use App\Models\SaldoKas;
+use App\Models\TransaksiKas;
 use Illuminate\Http\Request;
 use App\Models\TransaksiHutang;
 
@@ -36,13 +38,12 @@ class DashboardController extends Controller
             // $cashTrend = (($currentCash - $saldoKasLastMonth->cash) / $saldoKasLastMonth->cash) * 100;
             $lastCashUpdate = Carbon::parse($saldoKas->updated_at)->format('d M Y H:i');
             
-            $outstandingDebt = TransaksiHutang::debtDueSoon()['total_debt'];
+            $outstandingDebt = $saldoKas->hutang;
             $debtDueSoon = TransaksiHutang::debtDueSoon()['earliest_due_debt'];
             // $debtTrend = (($outstandingDebt - $debtDueSoon) / $debtDueSoon) * 100 ?? 0;
         }
 
-        // dd($outstandingDebt, $debtDueSoon);
-
+        // dd(Produk::where('tanggal_barang_masuk', '>=', now()->subDays(30)->format('Y-m-d'))->count());
         $data = [
             'title' => 'Dashboard',
             
@@ -58,12 +59,12 @@ class DashboardController extends Controller
             'debtDueSoon' => floatval($debtDueSoon),
             'debtTrend' => 0,
             
-            'totalStockItems' => 156, // Total items in inventory
-            'lowStockItems' => 8, // Items with low stock
+            'totalStockItems' => Produk::returnGlobalStockAvailability(),
+            'lowStockItems' => Produk::where('tanggal_barang_masuk', '>=', now()->subDays(30)->format('Y-m-d'))->count(), // Items with low stock
             
             // Transaction Statistics
-            'todayTransactions' => 24, // Transactions today
-            'pendingTransactions' => 5, // Pending transactions
+            'todayTransactions' => TransaksiKas::where('created_at', '>=', now()->format('Y-m-d'))->count(), // Transactions today
+            'pendingTransactions' => 0, // Pending transactions
             
             'breadcrumb' => $breadcrumb,
         ];
