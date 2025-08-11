@@ -2,17 +2,32 @@
 
 namespace Database\Seeders;
 
+use App\Models\Produk;
+use App\Models\Satuan;
 use App\Models\SaldoKas;
+use App\Models\Supplier;
+use App\Models\ProdukDetail;
 use App\Models\TransaksiKas;
+use App\Models\TransaksiHutang;
 use Illuminate\Database\Seeder;
+use App\Models\HistoryTransaksi;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class PostDevelopmentSeeder extends Seeder
 {
+    private const TOTAL_SEED_DATA = 6;
+    
     public function run(): void
     {
+        $this->command->warn('Seeding post development data...');
+        
+        $progressBar = new ProgressBar($this->command->getOutput(), self::TOTAL_SEED_DATA);
+        $progressBar->start();
+
         DB::statement("INSERT INTO `supplier` (`id`, `nama`, `alamat`, `no_telp`, `hutang`, `created_at`, `updated_at`) VALUES
             (NULL, 'PT Global Pasifik Prima', 'Komplek Bahan Bangunan, JL. Arteri Jl. Mangga Dua Raya No.16 Blok F7, RT.17/RW.11, Mangga Dua Sel., Kecamatan Sawah Besar, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10730', '(021) 6011 758', 0, NOW(), NOW()),
+            (NULL, 'Erafone Tangerang', 'Jl. Jenderal Sudirman No.1, RT.001/005/RW.005, Babakan, Kec. Tangerang, Kota Tangerang, Banten 15117', '081284456745', 0, NOW(), NOW()),
             (NULL, 'CV Maju Jaya', 'Jl. Merpati No.12, Bandung, Jawa Barat', '081234567890', 0, NOW(), NOW()),
             (NULL, 'PT Sentosa Abadi', 'Jl. Rajawali No.5, Surabaya, Jawa Timur', '082134567891', 0, NOW(), NOW()),
             (NULL, 'Toko Sumber Rejeki', 'Jl. Gajah Mada No.23, Semarang, Jawa Tengah', '083134567892', 0, NOW(), NOW()),
@@ -46,15 +61,210 @@ class PostDevelopmentSeeder extends Seeder
             (NULL, 'PT Berkat Usaha', 'Jl. Kalimantan No.17, Gorontalo', '084444567820', 0, NOW(), NOW())"
         );
 
+        $progressBar->advance();
+        sleep(0.5);
+        
         $saldoKas = SaldoKas::create([
             'cash' => 15000000,
             'hutang' => 0, 
             'date' => now()->format('Y-m-01'),
-            'keterangan' => ''
+            'keterangan' => 'Saldo Kas Bulan ' . now()->format('F Y'),
         ]);
         
         TransaksiKas::create([
-            ''
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'modal masuk',
+            'keterangan' => 'Modal awal',
+            'cash_in' => 15000000,
+            'cash_out' => 0,
+            'current_saldo' => $saldoKas->cash,
         ]);
+        
+        HistoryTransaksi::create([
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'modal masuk',
+            'keterangan' => 'Modal awal',
+            'cash_in' => 15000000,
+            'cash_out' => 0,
+            'hutang_in' => 0,
+            'hutang_out' => 0,
+            'saldo_kas' => $saldoKas->cash,
+            'total_hutang' => 0,
+        ]);
+
+        $progressBar->advance();
+        sleep(1);
+
+        $saldoKas->update([
+            'cash' => 25000000,
+        ]);
+
+        TransaksiKas::create([
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'modal masuk',
+            'keterangan' => 'Investasi masuk',
+            'cash_in' => 10000000,
+            'cash_out' => 0,
+            'current_saldo' => $saldoKas->cash,
+        ]);
+
+        HistoryTransaksi::create([
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'modal masuk',
+            'keterangan' => 'Investasi masuk',
+            'cash_in' => 10000000,
+            'cash_out' => 0,
+            'hutang_in' => 0,
+            'hutang_out' => 0,
+            'saldo_kas' => $saldoKas->cash,
+            'total_hutang' => 0,
+        ]);
+
+        $progressBar->advance();
+        sleep(1);
+
+        $satuans = [
+            'box',
+            'pcs',
+            'meter',
+            'liter',
+            'kg',
+            'set',
+            'roll',
+            'sak',
+            'pack',
+        ];
+
+        foreach ($satuans as $satuan) {
+            Satuan::create([
+                'nama' => $satuan
+            ]);
+        }
+
+        $progressBar->advance();
+        sleep(1);
+        
+        $produk1 = Produk::create([
+            'nama' => 'Marco Carara Pearl',
+            'harga_beli' => 15000000,
+            'metode_pembayaran' => 'hutang',
+            'data_supplier' => 'PT Global Pasifik Prima',
+            'tanggal_barang_masuk' => now()->addDays(1)->format('Y-m-d'),
+            'tanggal_jatuh_tempo' => now()->addMonths(1)->endOfMonth()->format('Y-m-d'),
+            'keterangan' => 'Pengambilan barang',
+        ]);
+
+        $hutang = 15000000;
+
+        Supplier::where('nama', 'PT Global Pasifik Prima')->update([
+            'hutang' => $hutang,
+        ]);
+        
+        $saldoKas->update([
+            'hutang' => $hutang,
+        ]);
+
+        TransaksiHutang::create([
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'transaksi hutang',
+            'supplier' => 'PT Global Pasifik Prima',
+            'keterangan' => 'Pengambilan barang',
+            'jatuh_tempo' => now()->addMonths(1)->endOfMonth()->format('Y-m-d'),
+            'hutang_in' => 15000000,
+            'hutang_out' => 0,
+            'total_hutang' => $saldoKas->hutang,
+        ]);
+
+        $produkDetails = [
+            [
+                'produk_id' => $produk1->id,
+                'nama_satuan' => 'box',
+                'kuantitas' => 100,
+                'harga_jual' => 180000,
+            ],
+            [
+                'produk_id' => $produk1->id,
+                'nama_satuan' => 'pcs',
+                'kuantitas' => 144,
+                'harga_jual' => 125000,
+            ]
+        ];
+
+        foreach ($produkDetails as $produkDetail) {
+            ProdukDetail::create($produkDetail);
+        }
+
+        HistoryTransaksi::create([
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'transaksi hutang',
+            'keterangan' => 'Pengambilan barang',
+            'cash_in' => 0,
+            'cash_out' => 0,
+            'hutang_in' => 15000000,
+            'hutang_out' => 0,
+            'saldo_kas' => $saldoKas->cash,
+            'total_hutang' => $saldoKas->hutang,
+        ]);
+
+        $progressBar->advance();
+        sleep(1);
+
+        $produk2 = Produk::create([
+            'nama' => 'Xiaomi Poco X3 Pro',
+            'harga_beli' => 2800000,
+            'metode_pembayaran' => 'hutang',
+            'data_supplier' => 'Erafone Tangerang',
+            'tanggal_barang_masuk' => now()->addDays(1)->format('Y-m-d'),
+            'tanggal_jatuh_tempo' => now()->addDays(14)->format('Y-m-d'),
+            'keterangan' => 'Pengambilan barang',
+        ]);
+
+        $hutang2 = 2800000;
+
+        Supplier::where('nama', 'Erafone Tangerang')->update([
+            'hutang' => $hutang2,
+        ]);
+
+        $saldoKas->update([
+            'hutang' => $hutang + $hutang2,
+        ]);
+
+        TransaksiHutang::create([
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'transaksi hutang',
+            'supplier' => 'Erafone Tangerang',
+            'keterangan' => 'Pengambilan barang',
+            'jatuh_tempo' => now()->addDays(14)->format('Y-m-d'),
+            'hutang_in' => 2800000,
+            'hutang_out' => 0,
+            'total_hutang' => $hutang + $hutang2,
+        ]);
+
+        HistoryTransaksi::create([
+            'saldo_kas_id' => $saldoKas->id,
+            'jenis_transaksi' => 'transaksi hutang',
+            'keterangan' => 'Pengambilan barang',
+            'cash_in' => 0,
+            'cash_out' => 0,
+            'hutang_in' => 2800000,
+            'hutang_out' => 0,
+            'saldo_kas' => $saldoKas->cash,
+            'total_hutang' => $hutang + $hutang2,
+        ]);
+
+        ProdukDetail::create([
+            'produk_id' => $produk2->id,
+            'nama_satuan' => 'pcs',
+            'kuantitas' => 1,
+            'harga_jual' => 2800000,
+        ]);
+
+        $progressBar->advance();
+        sleep(1);
+
+        $progressBar->finish();
+        
+        $this->command->newLine();
+        $this->command->info('Seeding completed!');
     }
 }
