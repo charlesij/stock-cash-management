@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Cashier - POS System</title>
     @vite('resources/css/app.css')
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -66,7 +68,6 @@
             document.querySelector('#clock span').textContent = time;
         }
         
-        // Update clock immediately and then every second
         updateClock();
         setInterval(updateClock, 1000);
     </script>
@@ -110,41 +111,6 @@
                             </button> --}}
                         </div>
                     </div>
-                    
-                    <!-- Category Filters -->
-                    {{-- <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <select class="appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-2.5 pr-10
-                                         focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300
-                                         text-gray-600 font-medium cursor-pointer">
-                                <option>All Categories</option>
-                                <option>Electronics</option>
-                                <option>Groceries</option>
-                                <option>Clothing</option>
-                                <option>Books</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <i class="fas fa-chevron-down text-gray-400"></i>
-                            </div>
-                        </div>
-                        <div class="flex-1 flex space-x-2 overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-                            <button class="bg-blue-600 text-white px-4 py-2.5 rounded-xl font-medium shadow-sm hover:shadow-md transition-all duration-300">
-                                All Items
-                            </button>
-                            <button class="bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2.5 rounded-xl font-medium transition-all duration-300
-                                         border-2 border-gray-200 hover:border-gray-300">
-                                Best Sellers
-                            </button>
-                            <button class="bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2.5 rounded-xl font-medium transition-all duration-300
-                                         border-2 border-gray-200 hover:border-gray-300">
-                                New Arrivals
-                            </button>
-                            <button class="bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2.5 rounded-xl font-medium transition-all duration-300
-                                         border-2 border-gray-200 hover:border-gray-300">
-                                On Sale
-                            </button>
-                        </div>
-                    </div> --}}
                 </div>
 
                 <!-- Products Grid -->
@@ -176,55 +142,16 @@
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <h2 class="text-xl font-bold text-gray-900">Checkout Items</h2>
-                            <p class="text-sm text-gray-500">0 items in cart</p>
+                            <p id="cart-item-count" class="text-sm text-gray-500">0 items in cart</p>
                         </div>
-                        <button class="text-red-500 hover:text-red-600 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 transition-all duration-300 cursor-pointer">
+                        <button id="clear-cart-btn" class="text-red-500 hover:text-red-600 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 transition-all duration-300 cursor-pointer">
                             <i class="fas fa-trash mr-1.5"></i>Hapus Semua
                         </button>
                     </div>
                 </div>
 
                 <!-- Cart Items -->
-                <div class="flex-1 overflow-y-auto mb-6 space-y-3 pr-2">
-                    <!-- Cart Item Template -->
-                    <template x-for="item in [
-                        { name: 'iPhone 14 Pro', price: 999.00, quantity: 1, image: 'https://placehold.co/60x60/e2e8f0/64748b?text=iPhone' },
-                        { name: 'Premium Coffee Beans', price: 24.99, quantity: 2, image: 'https://placehold.co/60x60/f0fdf4/16a34a?text=Coffee' },
-                        { name: 'Wireless Mouse', price: 39.99, quantity: 1, image: 'https://placehold.co/60x60/fefce8/ca8a04?text=Mouse' }
-                    ]">
-                        <div class="group bg-gray-50 hover:bg-white rounded-xl p-3 flex items-center space-x-3
-                                  transition-all duration-300 hover:shadow-md border border-gray-100">
-                            <div class="relative">
-                                <img :src="item.image" :alt="item.name" 
-                                     class="w-14 h-14 rounded-lg object-cover shadow-sm">
-                                <button class="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full 
-                                           flex items-center justify-center opacity-0 group-hover:opacity-100 
-                                           transition-opacity duration-300 hover:bg-red-600">
-                                    <i class="fas fa-times text-xs"></i>
-                                </button>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium text-gray-900" x-text="item.name"></h4>
-                                <div class="flex items-center justify-between mt-1">
-                                    <p class="text-blue-600 font-bold">
-                                        $<span x-text="(item.price * item.quantity).toFixed(2)"></span>
-                                    </p>
-                                    <div class="flex items-center space-x-2">
-                                        <button class="w-7 h-7 bg-white hover:bg-gray-100 rounded-lg flex items-center justify-center 
-                                                   transition-colors border border-gray-200 hover:border-gray-300">
-                                            <i class="fas fa-minus text-xs text-gray-600"></i>
-                                        </button>
-                                        <span class="w-8 text-center font-medium" x-text="item.quantity"></span>
-                                        <button class="w-7 h-7 bg-white hover:bg-gray-100 rounded-lg flex items-center justify-center 
-                                                   transition-colors border border-gray-200 hover:border-gray-300">
-                                            <i class="fas fa-plus text-xs text-gray-600"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </div>
+                <div id="cart-items" class="flex-1 overflow-y-auto mb-6 space-y-3 pr-2"></div>
 
                 <!-- Cart Summary -->
                 <div class="border-t border-gray-200 pt-4">
@@ -245,7 +172,7 @@
                     <div class="space-y-3 mb-4">
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-600">Subtotal</span>
-                            <span class="font-medium">$1,088.97</span>
+                            <span id="cart-subtotal-amount" class="font-medium">Rp 0</span>
                         </div>
                         {{-- <div class="flex justify-between text-sm">
                             <span class="text-gray-600">Tax (8.5%)</span>
@@ -259,8 +186,8 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-lg font-bold">Total</span>
                                 <div class="text-right">
-                                    <span class="text-2xl font-bold text-blue-600">$1,088.97</span>
-                                    <p class="text-sm text-gray-500">Sudah termasuk PPN 11%</p>
+                                    <span id="cart-total-amount" class="text-2xl font-bold text-blue-600">Rp 0</span>
+                                    {{-- <p class="text-sm text-gray-500">Sudah termasuk PPN 11%</p> --}}
                                 </div>
                             </div>
                         </div>
@@ -268,21 +195,21 @@
 
                     <!-- Payment Buttons -->
                     <div class="space-y-3">
-                        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl
+                        <button id="process-payment-btn" class="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl
                                      font-semibold transition-all duration-300 shadow-lg shadow-green-600/20
                                      hover:shadow-green-600/30 focus:ring-4 focus:ring-green-500/20">
                             <i class="fas fa-credit-card mr-2"></i>Process Payment
                         </button>
                         <div class="flex space-x-2">
-                            <button title="Simpan transaksi untuk nanti" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 px-4 rounded-xl
+                            <button id="hold-btn" title="Simpan transaksi untuk nanti" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 px-4 rounded-xl
                                          text-sm font-medium transition-all duration-300 hover:shadow-sm cursor-pointer">
                                 <i class="fas fa-save mr-1.5"></i>Hold
                             </button>
-                            <button title="Cetak invoice" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2.5 px-4 rounded-xl
+                            <button id="receipt-btn" title="Cetak invoice" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2.5 px-4 rounded-xl
                                          text-sm font-medium transition-all duration-300 hover:shadow-sm cursor-pointer">
                                 <i class="fas fa-receipt mr-1.5"></i>Receipt
                             </button>
-                            <button title="Bagikan invoice" class="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-600 py-2.5 px-4 rounded-xl
+                            <button id="share-btn" title="Bagikan invoice" class="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-600 py-2.5 px-4 rounded-xl
                                          text-sm font-medium transition-all duration-300 hover:shadow-sm cursor-pointer">
                                 <i class="fas fa-share-alt mr-1.5"></i>Share
                             </button>
@@ -292,13 +219,6 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('keydown', function(e) {
-            if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-                e.preventDefault();
-                document.getElementById('search-produk-input').focus();
-            }
-        });
-    </script>
+    <script src="{{ asset('js/components/cashier.js') }}"></script>
 </body>
 </html>

@@ -9,3 +9,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/detail-produk/{id}', [ApiController::class, 'getDetailProduct']);
+Route::post('/checkout', [ApiController::class, 'checkoutItem']);
+Route::post('/checkout/hold', [ApiController::class, 'holdTransaction']);
+Route::post('/checkout/receipt', [ApiController::class, 'receiptTransaction']);
+Route::post('/checkout/share', [ApiController::class, 'shareTransaction']);

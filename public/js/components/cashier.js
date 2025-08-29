@@ -5,9 +5,23 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+const API_URL = 'http://127.0.0.1:8000/api';
+
 $(document).ready(function () {
-    $('.card-product').click(function () {
-        showProductDetail($(this).attr('data-target'));
+    $(document).on('click', '.card-product', function () {
+        const productId = $(this).attr('data-product-id');
+        if (!productId) return;
+        // console.log('click card-product: ', productId);
+        showProductDetail(productId);
+    });
+
+    window.cashierCart = {
+        items: [],
+    };
+
+    $(document).on('click', '#clear-cart-btn', function() {
+        window.cashierCart.items = [];
+        renderCart();
     });
 });
 
@@ -72,7 +86,6 @@ async function showProductDetail(id) {
     let check = await getDetailProduct(id);
 
     if (check) {
-        console.log(check);
         $('.remove-later').remove();
     
         const detailsContainer = modal.querySelector('.space-y-4');
@@ -85,21 +98,22 @@ async function showProductDetail(id) {
         const stockContent = document.createElement('div');
         stockContent.className = 'flex flex-wrap gap-2 mt-4'; 
         check.forEach(detail => {
+            const safeUnitId = detail.id;
             let stockItem = document.createElement('div');
             stockItem.className = 'flex justify-between w-full bg-white py-2 px-4 rounded-lg border border-gray-200 shadow-sm';
             stockItem.innerHTML = `
                 <div class="flex flex-col">
                     <div class="text-sm text-gray-500">${detail.nama_satuan}</div>
-                    <div class="text-lg font-bold text-gray-800 kuantitas-${detail.nama_satuan}">${detail.kuantitas}</div>
+                    <div class="text-lg font-bold text-gray-800 kuantitas-${safeUnitId}">${detail.kuantitas}</div>
                 </div>
                 <div class="flex justify-center items-center">
-                    <span class="text-gray-500 selected-value-${detail.nama_satuan}-${detail.id}" data-value="0"></span>
+                    <span class="text-gray-500 selected-value-${safeUnitId}" data-value="0"></span>
                 </div>
                 <div class="flex gap-2">
-                    <button class="h-full bg-gray-200 text-gray-500 px-4 py-2 rounded-lg cursor-pointer substract-item" data-satuan="${detail.nama_satuan}">
+                    <button class="h-full bg-gray-200 text-gray-500 px-4 py-2 rounded-lg cursor-pointer substract-item" data-unit-id="${safeUnitId}" data-unit-name="${detail.nama_satuan}" data-price="${detail.harga_jual}" data-product-id="${id}">
                         <i class="fas fa-minus"></i>
                     </button>
-                    <button class="h-full bg-gray-200 text-gray-500 px-4 py-2 rounded-lg cursor-pointer add-item" data-satuan="${detail.nama_satuan}">
+                    <button class="h-full bg-gray-200 text-gray-500 px-4 py-2 rounded-lg cursor-pointer add-item" data-unit-id="${safeUnitId}" data-unit-name="${detail.nama_satuan}" data-price="${detail.harga_jual}" data-product-id="${id}">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
@@ -124,56 +138,100 @@ async function showProductDetail(id) {
         detailsContainer.appendChild(submitButtonContainer);
     }
 
-    document.addEventListener('keydown', (e) => {
+    const escHandler = (e) => {
         if (e.key === 'Escape') {
             overlay.remove();
+            document.removeEventListener('keydown', escHandler);
         }
+    };
+    document.addEventListener('keydown', escHandler);
+
+    $(document).off('click.cashierAdd').on('click.cashierAdd', '.add-item', function() {
+        const unitId = $(this).data('unit-id');
+        const unitName = $(this).data('unit-name');
+        const selectedValue = $(`.selected-value-${unitId}`);
+        const kuantitas = $(`.kuantitas-${unitId}`);
+        const currentSelected = parseInt(selectedValue.attr('data-value') ?? 0);
+        const currentStock = parseInt(kuantitas.text() ?? 0);
+        if (currentStock <= 0) return; // cap by stock
+        selectedValue.text(`${currentSelected + 1} ${unitName} dipilih`);
+        selectedValue.attr('data-value', currentSelected + 1);
+        kuantitas.text(currentStock - 1);
     });
 
-    $(document).on('click', '.add-item', function() {
-        const satuan = $(this).data('satuan');
-        const selectedValue = $(`.selected-value-${satuan}-${id}`);
-        const currentValue = parseInt(selectedValue.attr('data-value') ?? 0);
-        selectedValue.text(`${currentValue + 1} ${satuan} dipilih`);
-        selectedValue.attr('data-value', currentValue + 1);
-
-        const kuantitas = $(`.kuantitas-${satuan}`);
-        const currentKuantitas = parseInt(kuantitas.text() ?? 0);
-        if (currentKuantitas > 0) {
-            kuantitas.text(currentKuantitas - 1);
-        }
-    });
-
-    $(document).on('click', '.substract-item', function() {
-        const satuan = $(this).data('satuan');
-        const selectedValue = $(`.selected-value-${satuan}-${id}`);   
-        const currentValue = parseInt(selectedValue.attr('data-value') ?? 0);
-        if (currentValue > 0) { 
-            selectedValue.text(`${currentValue - 1} ${satuan} dipilih`);
-            selectedValue.attr('data-value', currentValue - 1);
+    $(document).off('click.cashierSub').on('click.cashierSub', '.substract-item', function() {
+        const unitId = $(this).data('unit-id');
+        const unitName = $(this).data('unit-name');
+        const selectedValue = $(`.selected-value-${unitId}`);
+        const kuantitas = $(`.kuantitas-${unitId}`);
+        const currentSelected = parseInt(selectedValue.attr('data-value') ?? 0);
+        const currentStock = parseInt(kuantitas.text() ?? 0);
+        if (currentSelected > 0) {
+            selectedValue.text(`${currentSelected - 1} ${unitName} dipilih`);
+            selectedValue.attr('data-value', currentSelected - 1);
+            kuantitas.text(currentStock + 1);
         } else {
-            selectedValue.text(`${currentValue} ${satuan} dipilih`);
-            selectedValue.attr('data-value', currentValue);
-        }
-
-        const kuantitas = $(`.kuantitas-${satuan}`);
-        const currentKuantitas = parseInt(kuantitas.text() ?? 0);
-        if (currentKuantitas > 0) {
-            kuantitas.text(currentKuantitas + 1);
+            selectedValue.text(`${currentSelected} ${unitName} dipilih`);
+            selectedValue.attr('data-value', currentSelected);
         }
     });
 
-    $(document).on('click', '.submit-button', function() {
-        const selectedValue = $(`.selected-value-${id}`);
-        const currentValue = parseInt(selectedValue.attr('data-value') ?? 0);
-        console.log(currentValue);
+    $(document).off('click.cashierSubmit').on('click.cashierSubmit', '.submit-button', function() {
+        // Collect selections
+        const productCard = document.getElementById(`produk-card-${id}`);
+        const productNameEl = document.querySelector(`#nama-produk-${id}`);
+        const productName = productCard ? productCard.querySelector('h3')?.textContent?.trim() : (productNameEl?.textContent?.trim() || 'Produk');
+        const productImage = document.getElementById(`produk-image-${id}`);
+        const imageUrl = productImage ? productImage.src : '';
+
+        const selections = [];
+        check.forEach(detail => {
+            const unitId = detail.id;
+            const unitName = detail.nama_satuan;
+            const selectedValue = document.querySelector(`.selected-value-${unitId}`);
+            if (!selectedValue) return;
+            const qty = parseInt(selectedValue.getAttribute('data-value') || '0');
+            if (qty > 0) {
+                const price = parseInt(String(detail.harga_jual));
+                selections.push({ unitId, unitName, qty, price });
+            }
+        });
+
+        if (selections.length === 0) {
+            overlay.remove();
+            document.removeEventListener('keydown', escHandler);
+            return;
+        }
+
+        // Merge into cart by productId+unitId
+        selections.forEach(sel => {
+            const existingIndex = window.cashierCart.items.findIndex(it => it.productId == id && it.unitId == sel.unitId);
+            if (existingIndex >= 0) {
+                window.cashierCart.items[existingIndex].quantity += sel.qty;
+            } else {
+                window.cashierCart.items.push({
+                    productId: parseInt(id),
+                    productName: productName,
+                    unitId: sel.unitId,
+                    unitName: sel.unitName,
+                    price: sel.price,
+                    quantity: sel.qty,
+                    imageUrl: imageUrl
+                });
+            }
+        });
+
+        renderCart();
+
+        overlay.remove();
+        document.removeEventListener('keydown', escHandler);
     });
 }
 
 async function getDetailProduct(id)
 {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/api/detail-produk/${id}`, {
+        const response = await fetch(`${API_URL}/detail-produk/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -196,4 +254,153 @@ async function getDetailProduct(id)
         console.error('Error', error);
         return null;
     }
+}
+
+// Utils
+function renderCart() {
+    const container = document.getElementById('cart-items');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const items = (window.cashierCart?.items) || [];
+    let subtotal = 0;
+    // Render each cart row
+    items.forEach(item => {
+        subtotal += (item.price * item.quantity);
+        const row = document.createElement('div');
+        row.className = 'group bg-gray-50 hover:bg-white rounded-xl p-3 flex items-center space-x-3 transition-all duration-300 hover:shadow-md border border-gray-100';
+        row.innerHTML = `
+            <div class="relative">
+                <img src="${item.imageUrl}" alt="${escapeHtml(item.productName)}" class="w-14 h-14 rounded-lg object-cover shadow-sm">
+            </div>
+            <div class="flex-1">
+                <h4 class="font-medium text-gray-900">${escapeHtml(item.productName)} <span class="text-xs text-gray-500">(${escapeHtml(item.unitName)})</span></h4>
+                <div class="flex items-center justify-between mt-1">
+                    <p class="text-blue-600 font-bold">${formatRupiah(item.price * item.quantity)}</p>
+                    <div class="flex items-center space-x-2">
+                        <button class="w-7 h-7 bg-white hover:bg-gray-100 rounded-lg flex items-center justify-center transition-colors border border-gray-200 hover:border-gray-300 cart-dec" data-product-id="${item.productId}" data-unit-id="${item.unitId}">
+                            <i class="fas fa-minus text-xs text-gray-600"></i>
+                        </button>
+                        <span class="w-8 text-center font-medium">${item.quantity}</span>
+                        <button class="w-7 h-7 bg-white hover:bg-gray-100 rounded-lg flex items-center justify-center transition-colors border border-gray-200 hover:border-gray-300 cart-inc" data-product-id="${item.productId}" data-unit-id="${item.unitId}">
+                            <i class="fas fa-plus text-xs text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+
+    // Update header count (rows count as per user preference)
+    const countEl = document.getElementById('cart-item-count');
+    if (countEl) {
+        countEl.textContent = `${items.length} items in cart`;
+    }
+
+    // Update subtotal and total (total = subtotal for now)
+    const subtotalEl = document.getElementById('cart-subtotal-amount');
+    const totalEl = document.getElementById('cart-total-amount');
+    if (subtotalEl) subtotalEl.textContent = formatRupiah(subtotal);
+    if (totalEl) totalEl.textContent = formatRupiah(subtotal);
+}
+
+// Cart increment/decrement (delegated once)
+$(document).off('click.cartInc').on('click.cartInc', '.cart-inc', function() {
+    const pid = parseInt($(this).data('product-id'));
+    const uid = parseInt($(this).data('unit-id'));
+    const idx = window.cashierCart.items.findIndex(it => it.productId === pid && it.unitId === uid);
+    if (idx >= 0) {
+        window.cashierCart.items[idx].quantity += 1;
+        renderCart();
+    }
+});
+
+$(document).off('click.cartDec').on('click.cartDec', '.cart-dec', function() {
+    const pid = parseInt($(this).data('product-id'));
+    const uid = parseInt($(this).data('unit-id'));
+    const idx = window.cashierCart.items.findIndex(it => it.productId === pid && it.unitId === uid);
+    if (idx >= 0) {
+        window.cashierCart.items[idx].quantity = Math.max(0, window.cashierCart.items[idx].quantity - 1);
+        if (window.cashierCart.items[idx].quantity === 0) {
+            window.cashierCart.items.splice(idx, 1);
+        }
+        renderCart();
+    }
+});
+
+// Payment and other actions
+$(document)
+  .off('click.processPayment')
+  .on('click.processPayment', '#process-payment-btn', function() {
+    //   console.log('Process Payment clicked. Cart items:', (window.cashierCart?.items)||[]);
+      processPayment(window.cashierCart?.items);
+  })
+  .off('click.hold')
+  .on('click.hold', '#hold-btn', function() {
+      console.log('Hold clicked. Cart items:', (window.cashierCart?.items)||[]);
+  })
+  .off('click.receipt')
+  .on('click.receipt', '#receipt-btn', function() {
+      console.log('Receipt clicked. Cart items:', (window.cashierCart?.items)||[]);
+  })
+  .off('click.share')
+  .on('click.share', '#share-btn', function() {
+      console.log('Share clicked. Cart items:', (window.cashierCart?.items)||[]);
+  });
+
+function formatRupiah(number) {
+    try {
+        const num = parseInt(String(number));
+        return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    } catch {
+        return 'Rp 0';
+    }
+}
+
+function escapeHtml(text) {
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+
+function processPayment(items)
+{
+    if (items.length === 0) {
+        Swal.fire({
+            title: 'No items in cart',
+            text: 'Please add items to the cart',
+            icon: 'warning',
+            button: 'OK',
+        });
+
+        return;
+    } else {
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Are you sure you want to checkout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            reverseButtons: true,
+        }).then(result => {
+            if (result.isConfirmed) {
+                fetch(`${API_URL}/checkout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ items }),
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error', error);
+                });
+            }
+        });
+    }
+
 }

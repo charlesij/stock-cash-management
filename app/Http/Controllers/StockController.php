@@ -69,8 +69,8 @@ class StockController extends Controller
                 'item_kuantitas.*' => 'required|numeric',
                 'item_unit_satuan' => 'required|array',
                 'item_unit_satuan.*' => 'required|string',
-                'item_harga_jual' => 'required|array',
-                'item_harga_jual.*' => 'required|numeric',
+                // 'item_harga_jual' => 'required|array',
+                // 'item_harga_jual.*' => 'required|numeric',
                 'item_keterangan' => 'nullable|string',
                 'item_jatuh_tempo' => 'nullable',
             ]);
@@ -149,13 +149,13 @@ class StockController extends Controller
                     'produk_id' => $produk->id,
                     'nama_satuan' => $validatedData['item_unit_satuan'][$i],
                     'kuantitas' => $validatedData['item_kuantitas'][$i],
-                    'harga_jual' => $validatedData['item_harga_jual'][$i],
+                    'harga_jual' => 0,
                 ];
                 ProdukDetail::create([
                     'produk_id' => $produk->id,
                     'nama_satuan' => $validatedData['item_unit_satuan'][$i],
                     'kuantitas' => $validatedData['item_kuantitas'][$i],
-                    'harga_jual' => $validatedData['item_harga_jual'][$i],
+                    'harga_jual' => 0,
                 ]);
             }
 
@@ -186,6 +186,7 @@ class StockController extends Controller
     public function inventoryView()
     {
         $breadcrumb = [
+            ['name' => 'Stock', 'url' => route('stock.index')],
             ['name' => 'Inventory', 'url' => route('stocks.inventory')],
         ];
         return view('dashboard.stock.inventory', [
@@ -193,9 +194,48 @@ class StockController extends Controller
         ]);
     }
 
+    public function productDetail($productDetailData = null)
+    {
+        $explodeData = explode('-', $productDetailData);
+        if ($productDetailData) {
+            $breadcrumb = [
+                ['name' => 'Stock', 'url' => route('stock.index')],
+                ['name' => 'Produk', 'url' => route('stock.product.details')],
+                ['name' => 'Produk Detail', 'url' => route('stock.product.details', ['id' => number_format($explodeData[1])])],
+            ];
+        } else {
+            $breadcrumb = [
+                ['name' => 'Stock', 'url' => route('stock.index')],
+                ['name' => 'Produk', 'url' => route('stock.product.details')],
+            ];
+        }
+
+        if ($productDetailData) {
+            $withSatuan = true;
+            $productId = number_format($explodeData[1]);
+            $productDetailId = null;
+
+            if (count($explodeData) > 2 && count($explodeData) === 4) {
+                $productDetailId = explode('-', $productDetailData)[3];
+            }
+
+            $produk = Produk::with('produkDetail')->where('id', $productId)->orderByDesc('updated_at')->first();
+        } else {
+            $withSatuan = false;
+            $produk = Produk::with('produkDetail')->orderByDesc('updated_at')->paginate(20);
+        }
+
+        return view('dashboard.stock.details', [
+            'breadcrumb' => $breadcrumb,
+            'produk' => $produk,
+            'withSatuan' => $withSatuan,
+        ]);
+    }
+
     public function settingsView()
     {
         $breadcrumb = [
+            ['name' => 'Stock', 'url' => route('stock.index')],
             ['name' => 'Settings', 'url' => route('stocks.settings')],
         ];
         return view('dashboard.stock.settings', [
@@ -206,10 +246,11 @@ class StockController extends Controller
     public function historyView()
     {
         $breadcrumb = [
+            ['name' => 'Stock', 'url' => route('stock.index')],
             ['name' => 'History', 'url' => route('stocks.history')],
         ];
 
-        $stockHistory = Produk::where('jenis_transaksi', 'penjualan')->paginate(20);
+        $stockHistory = Produk::paginate(20);
 
         return view('dashboard.stock.history', [
             'breadcrumb' => $breadcrumb,

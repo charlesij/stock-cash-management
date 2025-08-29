@@ -38,7 +38,9 @@ Route::middleware(WebAuthenticate::class)->group(function () {
         Route::post('_stocks/edit', [StockController::class, 'edit'])->name('stock.edit');
         Route::put('_stocks/edit', [StockController::class, 'update'])->name('stock.update');
         Route::post('_stocks/delete', [StockController::class, 'delete'])->name('stock.delete');
+        Route::get('_stocks/_productdetails/{ppd?}', [StockController::class, 'productDetail'])->name('stock.product.details');
         Route::get('_stocks/_settings', [StockController::class, 'settingsView'])->name('stocks.settings');
+        Route::get('_stocks/_inventory', [StockController::class, 'inventoryView'])->name('stocks.inventory');
         Route::get('_stocks/_history', [StockController::class, 'historyView'])->name('stocks.history');
     
         Route::get('_transaction/', [TransactionController::class, 'transactionView'])->name('transaction.index');

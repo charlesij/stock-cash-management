@@ -91,6 +91,7 @@
                                         <th class="px-6 py-3 text-left">Kuantitas</th>
                                         <th class="px-6 py-3 text-left">Satuan</th>
                                         <th class="px-6 py-3 text-left">Harga Satuan</th>
+                                        <th class="px-6 py-3 text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
@@ -100,6 +101,13 @@
                                                 <td class="px-6 py-4 text-gray-500">{{ $item->kuantitas }}</td>
                                                 <td class="px-6 py-4 text-gray-500">{{ $item->nama_satuan }}</td>
                                                 <td class="px-6 py-4 text-gray-500">Rp. {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                                                <td calss="px-6 py-4 ">
+                                                    <div class="flex justify-center items-center">
+                                                        <button data-product="p-{{ $produkDetailView->id }}-d-{{ $item->id }}" class="edit-detail-button py-2 px-4 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-400 hover:to-gray-500 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+                                                            Edit
+                                                        </button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -211,8 +219,14 @@
         $('#close-detail-produk-modal').click(() => {
             $('#detail-produk-modal').hide();
         });
-
     });
+
+$(document).ready(function() {
+    $('.edit-detail-button').on('click', function() {
+        const productData = $(this).data('product');
+        window.location.href=`_stocks/_productdetails/${productData}`
+    });
+});
 </script>
 
 @endsection

@@ -53,13 +53,13 @@
 
                         {{ $modal }}
         
-                        <div class="bg-gray-50 rounded-b-lg flex justify-end space-x-2">
+                        <div class="rounded-b-lg flex justify-end space-x-2">
                             <button type="button" id="cancel_add_{{ $id }}"
-                                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer">
                                 Cancel
                             </button>
                             <button type="submit" id="save_new_{{ $id }}"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer">
                                 Simpan
                             </button>
                         </div>

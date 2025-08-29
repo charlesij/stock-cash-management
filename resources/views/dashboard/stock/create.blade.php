@@ -15,8 +15,37 @@
                     required>
             </div>
 
+            <x-custom-search-input 
+                id="satuan_master"
+                name="Unit"
+                placeholder="Cari atau buat satuan unit..."
+                addButton="true"
+                formActionName="stock.create.satuan"
+                formActionMethod="POST"
+            >
+                @foreach ($satuan as $item)
+                    <div class="satuan_master-option px-3 py-2 hover:bg-gray-100 cursor-pointer" data-value="{{ $item->nama }}" data-name="{{ $item->nama }}">
+                        {{ $item->nama }}
+                    </div>
+                @endforeach
+                <x-slot name="modal">
+                    <div class="mb-4">
+                        <input type="text" id="satuan_master_unit" name="new_satuan_name" 
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            placeholder="Enter unit name">
+                    </div>
+                </x-slot>
+            </x-custom-search-input>
+
             <div class="mb-4">
-                <label for="harga_beli" class="block text-gray-700 font-semibold mb-2 ">Harga Beli</label>
+                <label for="kuantitas" class="block text-gray-700 font-semibold mb-2">Kuantitas</label>
+                <input type="number" name="kuantitas" id="kuantitas" value="{{ old('kuantitas') }}" placeholder="Input kuantitas"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    required>
+            </div>
+
+            <div class="mb-4">
+                <label for="harga_beli" class="block text-gray-700 font-semibold mb-2 ">Total Harga Beli</label>
                 <input type="text" name="harga_beli" id="harga_beli" value="{{ old('harga_beli') }}" placeholder="Input harga beli per unit"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 number-format"
                     required>
@@ -79,7 +108,7 @@
                     required>
             </div>
 
-            <div class="grid grid-cols-3 col-span-2 gap-4 border-2 border-dashed border-gray-300 rounded-md p-4">
+            {{-- <div class="grid grid-cols-3 col-span-2 gap-4 border-2 border-dashed border-gray-300 rounded-md p-4">
                 
                 <div class="col-span-3 grid grid-cols-3 gap-4">
                     <x-custom-search-input 
@@ -118,16 +147,7 @@
                             required>
                     </div>
                 </div>
-
-                {{-- Perbaiki nanti, buat cashier nya jalan dulu --}}
-                {{-- <div class="col-span-3 border-t border-dashed border-gray-300 rounded-md p-4">
-                    <div id="total_preview" class="text-right text-gray-600 mb-2"></div>
-                    <button type="button" id="add_unit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
-                        <i class="fas fa-plus mr-2"></i>
-                        Tambah Unit
-                    </button>
-                </div> --}}
-            </div>
+            </div> --}}
             
             <div class="mb-4 col-span-2">
                 <label for="keterangan" class="block text-gray-700 font-semibold mb-2">Keterangan</label>

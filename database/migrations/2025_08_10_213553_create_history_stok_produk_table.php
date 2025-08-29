@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('history_stok_produk', function (Blueprint $table) {
             $table->id();
             $table->foreignId('produk_id')->constrained('produk');
+            $table->foreignId('produk_detail_id')->constrained('produk_detail');
             $table->integer('qty_in')->default(0);
             $table->integer('qty_out')->default(0);
             $table->string('unit');
