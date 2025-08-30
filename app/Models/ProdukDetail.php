@@ -11,7 +11,8 @@ class ProdukDetail extends Model
 
     protected $fillable = [
         'produk_id', 
-        'nama_satuan', 
+        // 'nama_satuan', 
+        'satuan_id',
         'kuantitas', 
         'harga_jual'
     ];
@@ -20,6 +21,11 @@ class ProdukDetail extends Model
     public function produk()
     {
         return $this->belongsTo(Produk::class, 'produk_id', 'id');
+    }
+
+    public function satuan()
+    {
+        return $this->belongsTo(Satuan::class, 'satuan_id', 'id');
     }
 }
 

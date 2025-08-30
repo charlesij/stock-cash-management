@@ -11,13 +11,17 @@ return new class extends Migration
         Schema::create('produk_detail', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('produk_id')->unsigned();
-            $table->string('nama_satuan');
+            $table->bigInteger('satuan_id')->unsigned(); // unit (satuan_nama)
             $table->decimal('kuantitas', 15, 0)->default(0);
             $table->decimal('harga_jual', 15, 0)->default(0);
 
             $table->timestamps();
 
              $table->foreign('produk_id')->references('id')->on('produk')
+             ->onDelete('restrict') 
+             ->onUpdate('cascade');
+
+            $table->foreign('satuan_id')->references('id')->on('satuan')
              ->onDelete('restrict') 
              ->onUpdate('cascade');
         });

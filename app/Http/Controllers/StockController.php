@@ -11,6 +11,7 @@ use App\Models\TransaksiKas;
 use Illuminate\Http\Request;
 use App\Models\TransaksiHutang;
 use App\Models\HistoryTransaksi;
+use App\Models\ProdukMaster;
 use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
@@ -44,6 +45,7 @@ class StockController extends Controller
             ['name' => 'Create', 'url' => route('stock.create')],
         ];
 
+        $produkMaster = ProdukMaster::orderBy('nama')->get();
         $satuan = Satuan::orderBy('nama')->get();
         $supplier = Supplier::orderBy('nama')->get();
         $saldoKas = SaldoKas::where('date', now()->format('Y-m-01'))->first();
@@ -53,11 +55,13 @@ class StockController extends Controller
             'satuan' => $satuan,
             'supplier' => $supplier,
             'saldoKas' => $saldoKas,
+            'produkMaster' => $produkMaster
         ]);
     }
 
     public function store(Request $request)
     {
+        dd($request->all());
         try {
             $validatedData = $request->validate([
                 'item_name' => 'required|string',
@@ -183,6 +187,32 @@ class StockController extends Controller
         }
     }
 
+    public function createProdukMaster(Request $request)
+    {
+        try {
+            $request->merge([
+                'produk_master_harga_beli' => str_replace('.', '', $request->produk_master_harga_beli)
+            ]);
+
+            $request->validate([
+                'produk_master_satuan_id' => 'required|numeric',
+                'produk_master_nama' => 'required|string|max:255',
+                'produk_master_harga_beli' => 'required|numeric|min:0',
+            ]);
+
+            ProdukMaster::create([
+                'satuan_id' => $request->produk_master_satuan_id,
+                'nama' => $request->produk_master_nama,
+                'harga_beli' => $request->produk_master_harga_beli
+            ]);
+
+            return redirect()->route('stock.create')->with('success', 'Master Produk created successfully');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return redirect()->route('stock.create')->with('error', 'Master Produk created failed: ' . $e->getMessage());
+        }
+    }
+
     public function inventoryView()
     {
         $breadcrumb = [
@@ -256,5 +286,36 @@ class StockController extends Controller
             'breadcrumb' => $breadcrumb,
             'stockHistory' => $stockHistory,
         ]);
+    }
+
+    public function getdataProduck($id)
+    {
+        try {
+            $masterProduk = ProdukMaster::with('satuan')->find($id);
+            
+            if (!$masterProduk) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan'
+                ], 404);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'data' => $masterProduk
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan server'
+            ], 500);
+        }
+    }
+
+    public function ajaxRow($index)
+    {
+        $satuan = Satuan::all(); // ambil semua satuan
+        return view('dashboard.partials._harga_jual_row', compact('index', 'satuan'));
     }
 }

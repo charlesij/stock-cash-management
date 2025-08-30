@@ -1,5 +1,7 @@
 <div class="mb-4">
-    <label for="{{ $id }}_search" class="block text-gray-700 font-semibold mb-2">{{ $name }}</label>
+    @if($showLabel)
+        <label for="{{ $id }}_search" class="block text-gray-700 font-semibold mb-2">{{ $label === null ? $name : $label }}</label>
+    @endif
     <div class="relative">
         <div class="flex items-center border border-gray-300 rounded-md">
             <div class="relative flex-1">
@@ -40,7 +42,7 @@
             <div class="p-2 rounded-xl bg-gray-300/50 w-full max-w-md">
                 <div class="bg-white py-4 px-6 rounded-lg shadow-md">
                     <div class="pb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Tambah {{ $name }}</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Tambah {{ $label === null ? $name : $label }}</h3>
                     </div>
                     
                     <form id="add_{{ $id }}_form" action="{{ route($formActionName) }}" method="POST">

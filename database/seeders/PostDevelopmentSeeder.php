@@ -11,6 +11,7 @@ use App\Models\TransaksiKas;
 use App\Models\TransaksiHutang;
 use Illuminate\Database\Seeder;
 use App\Models\HistoryTransaksi;
+use App\Models\ProdukMaster;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -144,8 +145,16 @@ class PostDevelopmentSeeder extends Seeder
         $progressBar->advance();
         sleep(1);
         
+        $box = Satuan::where('nama', 'box')->first()->id;
+        $pcs = Satuan::where('nama', 'box')->first()->id;
+
+        $produk_master1 = ProdukMaster::create([
+            'satuan_id' => $box,
+            'nama' => 'Marco Carara Pearl'
+        ]);
+
         $produk1 = Produk::create([
-            'nama' => 'Marco Carara Pearl',
+            'produk_master_id' => $produk_master1->id,
             'harga_beli' => 15000000,
             'metode_pembayaran' => 'hutang',
             'data_supplier' => 'PT Global Pasifik Prima',
@@ -178,13 +187,15 @@ class PostDevelopmentSeeder extends Seeder
         $produkDetails = [
             [
                 'produk_id' => $produk1->id,
-                'nama_satuan' => 'box',
+                // 'nama_satuan' => 'box',
+                'satuan_id' => $box,
                 'kuantitas' => 100,
                 'harga_jual' => 180000,
             ],
             [
                 'produk_id' => $produk1->id,
-                'nama_satuan' => 'pcs',
+                // 'nama_satuan' => 'pcs',
+                'satuan_id' => $pcs,
                 'kuantitas' => 144,
                 'harga_jual' => 125000,
             ]
@@ -209,8 +220,13 @@ class PostDevelopmentSeeder extends Seeder
         $progressBar->advance();
         sleep(1);
 
+        $produk_master2 = ProdukMaster::create([
+            'satuan_id' => $box,
+            'nama' => 'Xiaomi Poco X3 Pro'
+        ]);
+
         $produk2 = Produk::create([
-            'nama' => 'Xiaomi Poco X3 Pro',
+            'produk_master_id' => $produk_master2->id,
             'harga_beli' => 2800000,
             'metode_pembayaran' => 'hutang',
             'data_supplier' => 'Erafone Tangerang',
@@ -254,7 +270,8 @@ class PostDevelopmentSeeder extends Seeder
 
         ProdukDetail::create([
             'produk_id' => $produk2->id,
-            'nama_satuan' => 'pcs',
+            // 'nama_satuan' => 'pcs',
+            'satuan_id' => $pcs,
             'kuantitas' => 1,
             'harga_jual' => 2800000,
         ]);

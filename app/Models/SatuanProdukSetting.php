@@ -6,21 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
-class Produk extends Model
+class SatuanProdukSetting extends Model
 {
     use HasFactory, Searchable;
 
     protected $fillable = [
-        'produk_master_id',
-        'harga_beli',
-        'metode_pembayaran',
-        'data_supplier',
-        'tanggal_barang_masuk',
-        'tanggal_jatuh_tempo',
-        'keterangan',
+        'produk_id',
+        'satuan_id',
+        'konversi',
+        'harga_jual',
+        'urutan',
     ];
 
-    protected $table = 'produk';
+    protected $table = 'satuan_produk_settings';
     
     public function searchableAs():string
     {

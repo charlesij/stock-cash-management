@@ -34,6 +34,7 @@ Route::middleware(WebAuthenticate::class)->group(function () {
         Route::get('_stocks/create', [StockController::class, 'create'])->name('stock.create');
         Route::post('_stocks/create', [StockController::class, 'store'])->name('stock.store');
         Route::post('_stock/create/satuan', [StockController::class, 'createSatuan'])->name('stock.create.satuan');
+        Route::post('_stock/create/produkmaster', [StockController::class, 'createProdukMaster'])->name('stock.create.produkmaster');
         Route::get('_stocks/edit', [StockController::class, 'redirectIndex']);
         Route::post('_stocks/edit', [StockController::class, 'edit'])->name('stock.edit');
         Route::put('_stocks/edit', [StockController::class, 'update'])->name('stock.update');
@@ -42,6 +43,9 @@ Route::middleware(WebAuthenticate::class)->group(function () {
         Route::get('_stocks/_settings', [StockController::class, 'settingsView'])->name('stocks.settings');
         Route::get('_stocks/_inventory', [StockController::class, 'inventoryView'])->name('stocks.inventory');
         Route::get('_stocks/_history', [StockController::class, 'historyView'])->name('stocks.history');
+        Route::get('getdataProduck/{id}', [StockController::class, 'getdataProduck'])->name('getdataProduck');
+        Route::get('harga-jual-row/{index}', [StockController::class, 'ajaxRow'])->name('stock.ajaxRow');
+
     
         Route::get('_transaction/', [TransactionController::class, 'transactionView'])->name('transaction.index');
         Route::get('_transaction/_cashflow', [TransactionController::class, 'cashflowView'])->name('transaction.cashflow');
@@ -73,6 +77,8 @@ Route::middleware(WebAuthenticate::class)->group(function () {
         Route::put('customer/edit', [CustomerController::class, 'update'])->name('customer.update');
         Route::post('customer/delete', [CustomerController::class, 'delete'])->name('customer.delete');
         Route::post('customer/create', [CustomerController::class, 'store'])->name('customer.store');
+
+        ;
     });
 
     Route::middleware(CashierAccess::class)->group(function () {

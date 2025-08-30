@@ -6,24 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('satuan_produk_settings', function (Blueprint $table) {
+        Schema::create('produk_master', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('produk_id');
             $table->unsignedBigInteger('satuan_id'); // unit
-            // $table->bigInteger('satuan_produk_id');
-            $table->integer('konversi');
-            $table->decimal('harga_jual', 15, 0)->default(0);
-            $table->integer('urutan')->default(1);
+            $table->string('nama');
+            $table->decimal('harga_beli', 15, 0)->default(0);
             $table->timestamps();
 
             $table->foreign('satuan_id')->references('id')->on('satuan')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('satuan_produk_settings');
+        Schema::dropIfExists('produk_master');
     }
 };
